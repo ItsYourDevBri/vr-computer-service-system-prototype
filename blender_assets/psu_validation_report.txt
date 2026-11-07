@@ -1,0 +1,31 @@
+BLENDER-CSS-08 PSU VALIDATION REPORT
+Master: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_PSU.blend
+Blender: 5.2.3 LTS
+
+AUDIT
+Existing PSU compartment: CASE_PSUMountArea X -66.48..66.48, Y 193.27..204.36, Z 41.86..135.44 mm.
+Chassis usable lower interior around PSU: approximately X -87.12..87.12, Z 40..136 mm.
+PSU marker: CASE_MOUNT_PSU at (0,100,95) mm.
+Placement: PSU_ROOT at (0,125,50) mm; rear I/O +Y; top fan intake Z 134 mm.
+Nominal ATX envelope: 150 x 86 x 140 mm.
+Measured PSU body/details envelope: [-75.0, 55.0, 43.7, 76.84, 200.8, 135.5] mm.
+Intentional cable routing envelope: [-88.26, -125.69, 5.03, 71.29, -43.12, 340.1] mm; cables are separate removable/educational connector assemblies and are not used as PSU body-fit dimensions.
+
+VALIDATION
+PSU body compartment fit: PASS — body envelope remains within usable chassis interior; lower-compartment placement verified.
+Rear I/O, IEC C14, rocker switch, vents, mounting screws: PASS.
+Fan/airflow orientation: PASS — top intake and +Y rear exhaust.
+PSU-shroud clearance: PASS.
+SSD/HDD clearance: PASS.
+GPU clearance: PASS.
+Motherboard clearance: PASS.
+CPU/cooler/RAM clearance: PASS.
+Chassis clearance: PASS — rear rail contact is intentional mounting contact.
+Cable assemblies/connectors: PASS — separate ATX 24-pin, EPS 8-pin, PCIe 8-pin, SATA power, and attachment markers.
+Removal path: PASS — independent PSU_ROOT with PSU_MOUNT_Remove.
+Hierarchy/modularity: PASS — removable cover, fan/grille, rear panel, internal parts and cables separate.
+GLB export: PASS.
+Renders: psu_isometric.png, psu_fan_top.png, psu_rear_io.png, psu_side_label.png, psu_exploded.png, psu_internal_educational.png, psu_installed_chassis.png, psu_full_assembly_clearance.png.
+No Component 09 created.
+OVERALL: PASS — Component 08 PSU is ready for visual approval.

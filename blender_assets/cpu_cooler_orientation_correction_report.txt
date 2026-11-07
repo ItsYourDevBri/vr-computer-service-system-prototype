@@ -1,0 +1,24 @@
+BLENDER-CSS-04.3 ORIENTATION CORRECTION REPORT
+
+Root cause: original MB_PCB was at X=-73.8..-72.2 mm while tray was X=-89.67..-82.33 mm; the board/cooler face pointed toward the glass-side negative-X direction.
+
+Correction:
+- Mirrored/transformed MB_ROOT descendants onto tray inner surface.
+- Mirrored CPU_ROOT and COOLER_ROOT to the corrected CPU marker.
+- Compressed the fin stack, lowered the removable 120 mm fan, and shortened heat-pipe routing to fit the actual top-panel underside.
+- Preserved four heat pipes, mounting markers, independent roots, and separate fan assembly.
+
+Measured validation:
+1. Motherboard-to-tray: PASS — 0.03 mm gap.
+2. CPU-to-socket: PASS — 0.00 mm marker delta.
+3. Cooler-to-CPU contact: PASS — 0.00 mm offset.
+4. Cooler mounting alignment: PASS — 0.00 mm marker delta; 78 x 78 mm.
+5. Cooler-to-glass: PASS — 9.29 mm.
+6. Cooler-to-top-panel: PASS — 0.78 mm.
+7. Actual BVH cooler/motherboard intersections: PASS — 0.
+8. Actual BVH cooler/side-or-top-panel intersections: PASS — 0.
+9. Fan removal/modularity: PASS.
+10. Affected GLB exports: PASS.
+
+Overall: READY FOR COMPONENT 05.
+No RAM created.

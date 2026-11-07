@@ -1,0 +1,658 @@
+{
+  "master": "/Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend",
+  "blender_version": "5.2.3 LTS",
+  "components": {
+    "01_Computer_Case": {
+      "collection_exists": true,
+      "object_count": 108,
+      "mesh_count": 99,
+      "triangle_estimate": 9420,
+      "material_count": 12,
+      "materials": [
+        "MAT_AccentBlue",
+        "MAT_DarkGrayPlastic",
+        "MAT_FineBlackMesh",
+        "MAT_MatteBlackMetal",
+        "MAT_MetallicBrackets",
+        "MAT_RubberFeet",
+        "MAT_TempFanAccent",
+        "MAT_TempFanVisibleBlade",
+        "MAT_TempFanVisibleFrame",
+        "MAT_TempFanVisibleHub",
+        "MAT_TempFanVisibleRing",
+        "MAT_TemperedGlass"
+      ],
+      "roots": [
+        {
+          "name": "CASE_ROOT",
+          "location_mm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            0.917,
+            0.9247,
+            0.985
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "CASE_MOUNT_FrontFan_01",
+        "CASE_MOUNT_FrontFan_02",
+        "CASE_MOUNT_FrontFan_03",
+        "CASE_MOUNT_GPU",
+        "CASE_MOUNT_Motherboard",
+        "CASE_MOUNT_PSU",
+        "CASE_MOUNT_RearFan",
+        "CASE_MOUNT_Storage"
+      ],
+      "collection_bounds_mm": null
+    },
+    "02_Motherboard": {
+      "collection_exists": true,
+      "object_count": 208,
+      "mesh_count": 197,
+      "triangle_estimate": 3708,
+      "material_count": 11,
+      "materials": [
+        "MAT_MB_AudioGreen",
+        "MAT_MB_AudioRed",
+        "MAT_MB_CPUSocket",
+        "MAT_MB_Connector",
+        "MAT_MB_GoldContacts",
+        "MAT_MB_Heatsink",
+        "MAT_MB_IOMetal",
+        "MAT_MB_PCB",
+        "MAT_MB_PortBlue",
+        "MAT_MB_Slot",
+        "MAT_MB_Trace"
+      ],
+      "roots": [
+        {
+          "name": "MB_ROOT",
+          "location_mm": [
+            -81.5,
+            30.0,
+            285.0
+          ],
+          "rotation_deg": [
+            -0.0,
+            -0.0,
+            -180.0
+          ],
+          "scale": [
+            -1.0,
+            -1.0,
+            -1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "MB_MOUNT_CPU",
+        "MB_MOUNT_CPUCooler",
+        "MB_MOUNT_GPU",
+        "MB_MOUNT_M2_01",
+        "MB_MOUNT_Power_24Pin",
+        "MB_MOUNT_Power_8Pin",
+        "MB_MOUNT_RAM_01",
+        "MB_MOUNT_RAM_02",
+        "MB_MOUNT_RAM_03",
+        "MB_MOUNT_RAM_04"
+      ],
+      "collection_bounds_mm": null
+    },
+    "03_CPU": {
+      "collection_exists": true,
+      "object_count": 16,
+      "mesh_count": 12,
+      "triangle_estimate": 3224,
+      "material_count": 5,
+      "materials": [
+        "MAT_CPU_Contacts",
+        "MAT_CPU_Edge",
+        "MAT_CPU_IHS",
+        "MAT_CPU_Mark",
+        "MAT_CPU_Substrate"
+      ],
+      "roots": [
+        {
+          "name": "CPU_ROOT",
+          "location_mm": [
+            -71.5,
+            30.0,
+            345.0
+          ],
+          "rotation_deg": [
+            -0.0,
+            -0.0,
+            -180.0
+          ],
+          "scale": [
+            -1.0,
+            -1.0,
+            -1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "CPU_MOUNT_Cooler",
+        "CPU_MOUNT_InstallOrigin",
+        "CPU_MOUNT_Socket"
+      ],
+      "collection_bounds_mm": null
+    },
+    "04_CPU_Cooler": {
+      "collection_exists": true,
+      "object_count": 45,
+      "mesh_count": 35,
+      "triangle_estimate": 1568,
+      "material_count": 4,
+      "materials": [
+        "MAT_Cooler_Aluminum",
+        "MAT_Cooler_DarkAluminum",
+        "MAT_Cooler_FanBlack",
+        "MAT_Cooler_Steel"
+      ],
+      "roots": [
+        {
+          "name": "COOLER_ROOT",
+          "location_mm": [
+            -71.5,
+            30.0,
+            345.0
+          ],
+          "rotation_deg": [
+            -0.0,
+            -0.0,
+            -180.0
+          ],
+          "scale": [
+            -1.0,
+            -1.0,
+            -1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "COOLER_MOUNT_CPUContact",
+        "COOLER_MOUNT_Fan",
+        "COOLER_MOUNT_InstallOrigin",
+        "COOLER_MOUNT_Remove"
+      ],
+      "collection_bounds_mm": null
+    },
+    "05_RAM": {
+      "collection_exists": true,
+      "object_count": 136,
+      "mesh_count": 126,
+      "triangle_estimate": 1512,
+      "material_count": 5,
+      "materials": [
+        "MAT_RAM_BlackHeatsink",
+        "MAT_RAM_DDR5_PCB",
+        "MAT_RAM_GoldContacts",
+        "MAT_RAM_MemoryIC",
+        "MAT_RAM_SilverAccent"
+      ],
+      "roots": [
+        {
+          "name": "RAM_A_ROOT",
+          "location_mm": [
+            -71.5,
+            93.0,
+            285.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "RAM_B_ROOT",
+          "location_mm": [
+            -71.5,
+            73.0,
+            285.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "RAM_A_ATTACH_INSTALL",
+        "RAM_A_ATTACH_REMOVE",
+        "RAM_B_ATTACH_INSTALL",
+        "RAM_B_ATTACH_REMOVE"
+      ],
+      "collection_bounds_mm": null
+    },
+    "06_GPU": {
+      "collection_exists": true,
+      "object_count": 118,
+      "mesh_count": 112,
+      "triangle_estimate": 4360,
+      "material_count": 11,
+      "materials": [
+        "MAT_GPU_Accent",
+        "MAT_GPU_Aluminum",
+        "MAT_GPU_Black",
+        "MAT_GPU_Copper",
+        "MAT_GPU_DisplayPort",
+        "MAT_GPU_GoldContact",
+        "MAT_GPU_HDMI",
+        "MAT_GPU_PCB",
+        "MAT_GPU_Shroud",
+        "MAT_GPU_Silver",
+        "MAT_GPU_Steel"
+      ],
+      "roots": [
+        {
+          "name": "GPU_ROOT",
+          "location_mm": [
+            -71.5,
+            15.0,
+            205.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "GPU_MOUNT_IOBracket",
+        "GPU_MOUNT_Inspect",
+        "GPU_MOUNT_InstallOrigin",
+        "GPU_MOUNT_PCIe",
+        "GPU_MOUNT_Remove"
+      ],
+      "collection_bounds_mm": null
+    },
+    "07_Storage": {
+      "collection_exists": true,
+      "object_count": 85,
+      "mesh_count": 73,
+      "triangle_estimate": 1612,
+      "material_count": 7,
+      "materials": [
+        "MAT_STORAGE_Black",
+        "MAT_STORAGE_Copper",
+        "MAT_STORAGE_Gold",
+        "MAT_STORAGE_Label",
+        "MAT_STORAGE_Metal",
+        "MAT_STORAGE_PCB",
+        "MAT_STORAGE_Silver"
+      ],
+      "roots": [
+        {
+          "name": "SSD_ROOT",
+          "location_mm": [
+            64.19,
+            46.24,
+            221.63
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "HDD_ROOT",
+          "location_mm": [
+            45.0,
+            55.0,
+            340.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "HDD_MOUNT_InstallOrigin",
+        "HDD_MOUNT_Remove",
+        "HDD_MOUNT_SATA",
+        "SSD_MOUNT_InstallOrigin",
+        "SSD_MOUNT_Remove",
+        "SSD_MOUNT_SATA"
+      ],
+      "collection_bounds_mm": null
+    },
+    "08_PSU": {
+      "collection_exists": true,
+      "object_count": 116,
+      "mesh_count": 102,
+      "triangle_estimate": 9048,
+      "material_count": 7,
+      "materials": [
+        "PSU_Cable",
+        "PSU_Copper",
+        "PSU_DarkMetal",
+        "PSU_MatteBlack",
+        "PSU_PCB",
+        "PSU_Steel",
+        "PSU_SwitchRed"
+      ],
+      "roots": [
+        {
+          "name": "PSU_ROOT",
+          "location_mm": [
+            0.0,
+            125.0,
+            50.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "PSU_CONNECT_ATX",
+        "PSU_CONNECT_EPS",
+        "PSU_CONNECT_PCIE",
+        "PSU_CONNECT_SATA",
+        "PSU_MOUNT_InstallOrigin",
+        "PSU_MOUNT_Rear",
+        "PSU_MOUNT_Remove"
+      ],
+      "collection_bounds_mm": null
+    },
+    "09_Case_Fans": {
+      "collection_exists": true,
+      "object_count": 108,
+      "mesh_count": 88,
+      "triangle_estimate": 2976,
+      "material_count": 7,
+      "materials": [
+        "CaseFan_Copper",
+        "CaseFan_Frame",
+        "CaseFan_MatteBlack",
+        "CaseFan_Red",
+        "CaseFan_Rubber",
+        "CaseFan_Screw",
+        "CaseFan_Yellow"
+      ],
+      "roots": [
+        {
+          "name": "FAN_Front_01_ROOT",
+          "location_mm": [
+            0.0,
+            -221.0,
+            108.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FAN_Front_02_ROOT",
+          "location_mm": [
+            -0.0,
+            -221.0,
+            226.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FAN_Front_03_ROOT",
+          "location_mm": [
+            0.0,
+            -221.0,
+            344.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FAN_Rear_01_ROOT",
+          "location_mm": [
+            -0.0,
+            210.0,
+            375.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "FAN_Front_01_MOUNT_InstallOrigin",
+        "FAN_Front_01_MOUNT_Power",
+        "FAN_Front_01_MOUNT_Remove",
+        "FAN_Front_02_MOUNT_InstallOrigin",
+        "FAN_Front_02_MOUNT_Power",
+        "FAN_Front_02_MOUNT_Remove",
+        "FAN_Front_03_MOUNT_InstallOrigin",
+        "FAN_Front_03_MOUNT_Power",
+        "FAN_Front_03_MOUNT_Remove",
+        "FAN_Rear_01_MOUNT_InstallOrigin",
+        "FAN_Rear_01_MOUNT_Power",
+        "FAN_Rear_01_MOUNT_Remove"
+      ],
+      "collection_bounds_mm": null
+    },
+    "10_Optical_Drive": {
+      "collection_exists": true,
+      "object_count": 55,
+      "mesh_count": 47,
+      "triangle_estimate": 3864,
+      "material_count": 8,
+      "materials": [
+        "Optical_Bezel",
+        "Optical_Dark",
+        "Optical_Disc",
+        "Optical_Gold",
+        "Optical_LED",
+        "Optical_Metal",
+        "Optical_PCB",
+        "Optical_Silver"
+      ],
+      "roots": [
+        {
+          "name": "OPTICAL_DRIVE_ROOT",
+          "location_mm": [
+            260.0,
+            0.0,
+            120.0
+          ],
+          "rotation_deg": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "attachment_markers": [
+        "OPTICAL_MOUNT_InstallOrigin",
+        "OPTICAL_MOUNT_Remove",
+        "OPTICAL_MOUNT_SATA",
+        "OPTICAL_MOUNT_TrayOpen"
+      ],
+      "collection_bounds_mm": null
+    }
+  },
+  "validation": {
+    "component_pair_aabb_intersections": [],
+    "attachment_marker_positions_mm": {
+      "CASE_MOUNT_Motherboard": [
+        -76.0,
+        30.0,
+        285.0
+      ],
+      "MB_MOUNT_CPU": [
+        -71.5,
+        30.0,
+        345.0
+      ],
+      "CPU_MOUNT_Cooler": [
+        -69.5,
+        30.0,
+        345.0
+      ],
+      "GPU_MOUNT_PCIe": [
+        -74.5,
+        15.0,
+        205.0
+      ],
+      "CASE_MOUNT_Storage": [
+        64.19,
+        46.24,
+        221.63
+      ],
+      "CASE_MOUNT_PSU": [
+        0.0,
+        92.47,
+        93.58
+      ],
+      "CASE_MOUNT_FrontFan_01": [
+        0.0,
+        -219.16,
+        106.38
+      ],
+      "CASE_MOUNT_FrontFan_02": [
+        0.0,
+        -219.16,
+        222.61
+      ],
+      "CASE_MOUNT_FrontFan_03": [
+        0.0,
+        -219.16,
+        338.84
+      ],
+      "CASE_MOUNT_RearFan": [
+        0.0,
+        208.06,
+        369.38
+      ]
+    },
+    "glb_files": {
+      "computer_case.glb": {
+        "exists": true,
+        "size_bytes": 1603824
+      },
+      "motherboard.glb": {
+        "exists": true,
+        "size_bytes": 10770708
+      },
+      "cpu.glb": {
+        "exists": true,
+        "size_bytes": 10385976
+      },
+      "cpu_cooler.glb": {
+        "exists": true,
+        "size_bytes": 10770708
+      },
+      "ram.glb": {
+        "exists": true,
+        "size_bytes": 11921732
+      },
+      "gpu.glb": {
+        "exists": true,
+        "size_bytes": 1102336
+      },
+      "ssd.glb": {
+        "exists": true,
+        "size_bytes": 390176
+      },
+      "hdd.glb": {
+        "exists": true,
+        "size_bytes": 392156
+      },
+      "psu.glb": {
+        "exists": true,
+        "size_bytes": 1210952
+      },
+      "case_fans.glb": {
+        "exists": true,
+        "size_bytes": 276744
+      },
+      "optical_drive.glb": {
+        "exists": true,
+        "size_bytes": 367216
+      }
+    },
+    "optical_drive_standalone": true
+  }
+}

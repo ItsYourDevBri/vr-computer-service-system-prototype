@@ -1,0 +1,11 @@
+BLENDER-CSS-01 — ATX Mid-Tower Computer Case
+Collection: 01_Computer_Case
+Overall envelope (mm): 210.0 W x 430.0 D x 460.0 H
+Root: CASE_ROOT
+Mesh objects: 67
+Attachment empties: 9
+Removable objects: CASE_GlassPanel, CASE_SolidPanel, CASE_FrontMesh, CASE_TopVentilation
+Placeholders: CASE_Placeholder_FrontFan_01..03, CASE_Placeholder_RearFan
+Materials: MAT_MatteBlackMetal, MAT_DarkGrayPlastic, MAT_TemperedGlass, MAT_FineBlackMesh, MAT_MetallicBrackets
+Export: computer_case.glb (GLB succeeded)
+Master: ATX_Mid_Tower_Master.blend

@@ -1,0 +1,30 @@
+BLENDER-CSS-07 STORAGE VALIDATION REPORT
+Master: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_Storage.blend
+Blender: 5.2.3 LTS
+
+CHASSIS AUDIT
+Existing SSD rails: CASE_StorageMount_SSD_01 and _02 at X 43.1..87.12, Y 52.71..58.26, Z 198.97..204.88 and 238.37..244.28 mm.
+Existing storage marker: CASE_MOUNT_Storage at (64.19,46.24,221.63) mm.
+No pre-existing 3.5-inch HDD bay was found; a separate HDD cage was added in clear solid-side volume.
+
+DEVICES
+SSD target: 100 x 69.85 x 7 mm. Measured device envelope: [68.19, 5.24, 186.71, 78.49, 121.61, 256.68] mm.
+HDD target: 147 x 101.6 x 26.1 mm. Measured device/cage envelope: [27.0, -18.5, 285.0, 63.0, 145.37, 402.0] mm.
+SSD_ROOT and HDD_ROOT are independent and removable. Covers, PCB, flash/platter internals, connectors, and mounting hardware remain separate objects.
+
+VALIDATION
+SSD mounting marker: PASS — root uses CASE_MOUNT_Storage.
+HDD mounting cage: PASS — independent bracket pair and HDD_MOUNT_InstallOrigin.
+SSD SATA access: PASS — connector rear clearance 80.08 mm.
+HDD SATA access: PASS — connector rear clearance 56.32 mm.
+SSD vs motherboard/cooler/GPU/chassis: PASS — {'mb': [], 'cooler': [], 'gpu': [], 'case': []}.
+HDD vs motherboard/cooler/GPU/chassis: PASS — {'mb': [], 'cooler': [], 'gpu': [], 'case': []}.
+Removal path -X samples (mm, SSD total hits, HDD total hits): [(0, 0, 0), (10, 0, 0), (20, 0, 0), (30, 0, 0), (40, 0, 0)].
+Removal paths: PASS.
+Chassis panel clearance: PASS — no panel intersections.
+GPU/motherboard/PSU-shroud clearance: PASS — no unintended intersections.
+GLB exports: {'ssd.glb': 'PASS', 'hdd.glb': 'PASS'}.
+Renders: ssd_isometric.png, ssd_exploded.png, hdd_isometric.png, hdd_exploded.png, storage_sata_connector_closeup.png, storage_mounting_brackets.png, ssd_installed_chassis.png, hdd_installed_chassis.png, storage_full_assembly_clearance.png.
+No Component 08 created.
+OVERALL: PASS — Component 07 storage devices are fit-validated and ready for visual approval.

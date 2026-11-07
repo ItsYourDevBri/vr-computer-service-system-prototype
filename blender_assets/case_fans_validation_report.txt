@@ -1,0 +1,31 @@
+BLENDER-CSS-09 CASE FANS VALIDATION REPORT
+Master: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_CaseFans.blend
+Blender: 5.2.3 LTS
+
+AUDIT
+Reused chassis markers: CASE_MOUNT_FrontFan_01/02/03 and CASE_MOUNT_RearFan.
+Superseded CASE_Placeholder_* and CASE_TempFan_* temporary meshes removed; no duplicate front fan set remains.
+Supported mounts: 3 front 120 mm positions at Z 108/226/344 mm; 1 rear position at Z 375 mm.
+
+MODEL
+Collection: 09_Case_Fans.
+Independent roots: FAN_Front_01_ROOT, FAN_Front_02_ROOT, FAN_Front_03_ROOT, FAN_Rear_01_ROOT.
+Nominal fan dimensions: 120 x 120 x 25 mm.
+Measured collection envelope: [-60.0, -237.0, 48.0, 60.0, 250.91, 435.0] mm.
+Front airflow: intake toward +Y. Rear airflow: exhaust toward +Y.
+Each fan includes separate frame, 7 blades, hub, screws, 4-pin connector, power cable, and install/remove markers.
+
+VALIDATION
+Front mounting alignment: PASS.
+Rear mounting alignment: PASS.
+Panel clearance: PASS — mounting-plane contacts are intentional.
+Motherboard/cooler/RAM/GPU/PSU/storage clearance: PASS.
+Unintended chassis intersections: PASS.
+Independent removal paths: PASS — four individual fan roots.
+Airflow orientation: PASS — front intake, rear exhaust.
+Hierarchy/materials: PASS.
+GLB export: PASS.
+Renders: case_fans_isometric.png, case_fans_front.png, case_fans_rear.png, case_fans_exploded.png, case_fans_installed_assembly.png, case_fans_full_clearance.png.
+No Component 10 created.
+OVERALL: PASS.

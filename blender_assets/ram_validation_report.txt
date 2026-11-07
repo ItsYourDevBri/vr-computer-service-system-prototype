@@ -1,0 +1,38 @@
+BLENDER-CSS-05.1 RAM FIT CORRECTION REPORT
+Master: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_RAM_051.blend
+Blender: 5.2.3 LTS
+
+ROOT-CAUSE AUDIT
+The four existing DIMM slots are DDR5-style, world Y centers 93, 73, 53, and 33 mm with 20 mm pitch. RAM orientation and nominal dimensions were correct. The 20 motherboard and 8 cooler collisions came from adjacent authored details intruding into the two populated slot envelopes:
+VRM/fins, fan header, capacitors, secondary M.2 detail, and the cooler right bracket/standoff.
+
+MINIMAL CORRECTIONS
+- VRM heatsink/fins: +5.0 mm world Y.
+- Capacitors 04–08: +9.0 mm world Y.
+- Fan header 03: +6.0 mm world Y.
+- Secondary M.2 connector/contact row: -22.0 mm world Y.
+- Cooler right mounting bracket, standoff 02, and right-side fasteners: -6.0 mm world Y.
+Preserved: chassis, motherboard PCB, DIMM slots, RAM roots and markers, RAM dimensions/key notch, CPU, cooler root, CPU contact origin, and cooler installation origin.
+
+BEFORE / AFTER
+RAM vs motherboard unintended intersections: 20 -> 0.
+RAM vs cooler intersections: 8 -> 0.
+Cooler vs glass panel intersections: 0.
+Cooler vs top-panel geometry intersections: 0.
+
+FINAL VALIDATION
+RAM standard/keying: PASS — DDR5-style layout and physical off-center notch.
+RAM A marker: PASS — (-71.5,93,285) mm.
+RAM B marker: PASS — (-71.5,73,285) mm.
+RAM measured envelope A/B: PASS — [25.5, 7.2, 133.35] mm / [25.5, 7.2, 133.35] mm.
+RAM vs motherboard: PASS — 0 unintended mesh intersections.
+RAM vs CPU cooler: PASS — 0 mesh intersections.
+CPU/cooler contact offset: 0.000 mm — PASS.
+Cooler installation-origin delta: 0.000 mm — PASS.
+Motherboard-to-tray gap: 0.032 mm — PASS.
+Cooler/glass mesh intersection: PASS.
+Cooler/top-panel mesh intersection: PASS.
+GLB exports: {'ram.glb': 'PASS', 'motherboard.glb': 'PASS', 'cpu_cooler.glb': 'PASS'}.
+Renders: ram_installed_corrected.png, ram_with_cpu_cooler_corrected.png, ram_motherboard_closeup_corrected.png, ram_full_assembly_clearance_corrected.png.
+OVERALL: PASS — RAM installation and Components 01–04 clearance validated.

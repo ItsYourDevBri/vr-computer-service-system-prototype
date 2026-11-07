@@ -1,0 +1,13 @@
+BLENDER-CSS-03.1 CPU VISUAL VALIDATION REPORT
+
+Enhanced existing 03_CPU collection in place.
+Socket compatibility: Intel LGA1700 illustrative socket
+Nominal CPU package: 37.5 x 45.0 x 4.4 mm
+Measured complete enhanced mesh envelope: 4.80 x 37.80 x 45.00 mm
+Attachment origin preserved: CPU_ROOT = MB_MOUNT_CPU (-0.083, 0.030, 0.345 m)
+Materials: brushed silver IHS, dark-green substrate, gold contacts, dark subtle markings
+Presentation: studio lighting, neutral gray background, close-up framing
+Verification: standalone collection isolation, contact-pad isolation, installed motherboard view
+GLB export: SUCCESS
+Existing chassis and motherboard preserved.
+Component 04 modeled: NO

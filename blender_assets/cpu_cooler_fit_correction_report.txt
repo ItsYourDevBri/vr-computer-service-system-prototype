@@ -1,0 +1,25 @@
+BLENDER-CSS-04.2 CPU COOLER FIT CORRECTION REPORT
+
+Backup: ATX_Mid_Tower_Master_before_CPU_Cooler_FitCorrection.blend
+
+Correction applied:
+- Moved COOLER_ContactBase by -1.45 mm along world X.
+- Contact surface now meets CPU_IHS front surface at X=-87.45 mm.
+- No Components 01–03 were modified.
+
+Measured validation:
+1. CPU contact offset: PASS (0.00 mm)
+2. Cooler install marker: PASS (0.00 mm from MB_MOUNT_CPU)
+3. Mounting alignment: PASS provisionally; four +/-39 mm mounts, standard 78 x 78 mm LGA1700 pattern
+4. Remaining motherboard/DIMM intersections: FAIL (8 AABB intersections)
+5. Chassis side-panel clearance: FAIL (-86.71 mm relative to inner glass boundary; cooler minimum X=-183.00 mm, glass inner X=-96.29 mm)
+6. Chassis top clearance: FAIL (-82.74 mm; cooler top=498.42 mm, case top structure=415.67 mm)
+7. Fan removal structure: PASS (COOLER_Fan is independent child assembly)
+8. Materials/transforms: PASS
+9. GLB export: PASS
+
+Root cause:
+The motherboard/CPU package is oriented with the CPU IHS toward the glass-side negative-X direction. The 75 mm tower depth and 120 mm fan therefore project through the narrow tray-to-glass space. The cooler also rises above the current chassis ceiling. A true full PASS requires changing the cooler class/orientation or correcting the chassis/motherboard orientation, which is outside a safe minimal cooler-only correction.
+
+Overall status: NOT READY FOR APPROVAL
+Component 05 / RAM: NOT CREATED.

@@ -1,0 +1,11 @@
+BLENDER-CSS-01.1 — Computer Case Visual Polish
+Collection: 01_Computer_Case
+Overall envelope: 210 x 430 x 460 mm
+Collection objects: 157
+Attachment empties preserved: 8
+Removable panels: CASE_GlassPanel, CASE_SolidPanel
+Temporary fans: CASE_TempFanVis_01..03 with visible frames, 5 blades, hubs, rings; archived purple placeholders hidden
+Front mesh: procedural bump, border, ventilation bars
+Viewport guides: camera/light objects preserved and hidden in viewport
+GLB export: succeeded
+Renders: isometric, interior, front, exploded

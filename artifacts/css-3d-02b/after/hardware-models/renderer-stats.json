@@ -1,0 +1,222 @@
+[
+  {
+    "id": "computer-case",
+    "file": "computer_case.glb",
+    "bytes": 1011904,
+    "meshes": 99,
+    "triangles": 9420,
+    "materials": 12,
+    "bounds": [
+      0.21,
+      0.46,
+      0.465
+    ],
+    "radius": 0.34348,
+    "distance": 1.24492,
+    "renderCalls": 199,
+    "renderedTriangles": 18852,
+    "filteredNodes": 55,
+    "correctedMaterials": "MAT_TempFanVisibleBlade,MAT_TempFanVisibleFrame,MAT_TempFanVisibleHub,MAT_TempFanVisibleRing",
+    "stereoRenderedTriangles": 37704
+  },
+  {
+    "id": "motherboard",
+    "file": "motherboard.glb",
+    "bytes": 742400,
+    "meshes": 197,
+    "triangles": 3708,
+    "materials": 11,
+    "bounds": [
+      0.026,
+      0.308,
+      0.258
+    ],
+    "radius": 0.20131,
+    "distance": 0.72964,
+    "renderCalls": 197,
+    "renderedTriangles": 3708,
+    "filteredNodes": 55,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 7416
+  },
+  {
+    "id": "cpu",
+    "file": "cpu.glb",
+    "bytes": 552852,
+    "meshes": 11,
+    "triangles": 3212,
+    "materials": 5,
+    "bounds": [
+      0.0048,
+      0.045,
+      0.0378
+    ],
+    "radius": 0.02948,
+    "distance": 0.10686,
+    "renderCalls": 11,
+    "renderedTriangles": 3212,
+    "filteredNodes": 56,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 6424
+  },
+  {
+    "id": "cpu-cooler",
+    "file": "cpu_cooler.glb",
+    "bytes": 584688,
+    "meshes": 39,
+    "triangles": 6688,
+    "materials": 5,
+    "bounds": [
+      0.1155,
+      0.1234,
+      0.12
+    ],
+    "radius": 0.10364,
+    "distance": 0.37564,
+    "renderCalls": 39,
+    "renderedTriangles": 6688,
+    "filteredNodes": 55,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 13376
+  },
+  {
+    "id": "ram",
+    "file": "ram.glb",
+    "bytes": 742168,
+    "meshes": 130,
+    "triangles": 6456,
+    "materials": 6,
+    "bounds": [
+      0.0318,
+      0.1338,
+      0.0291
+    ],
+    "radius": 0.07027,
+    "distance": 0.25471,
+    "renderCalls": 130,
+    "renderedTriangles": 6456,
+    "filteredNodes": 55,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 12912
+  },
+  {
+    "id": "gpu",
+    "file": "gpu.glb",
+    "bytes": 728036,
+    "meshes": 112,
+    "triangles": 4360,
+    "materials": 11,
+    "bounds": [
+      0.064,
+      0.137,
+      0.33
+    ],
+    "radius": 0.1815,
+    "distance": 0.65782,
+    "renderCalls": 112,
+    "renderedTriangles": 4360,
+    "filteredNodes": 55,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 8720
+  },
+  {
+    "id": "ssd",
+    "file": "ssd.glb",
+    "bytes": 390176,
+    "meshes": 38,
+    "triangles": 6860,
+    "materials": 6,
+    "bounds": [
+      0.0103,
+      0.07,
+      0.1164
+    ],
+    "radius": 0.06809,
+    "distance": 0.24679,
+    "renderCalls": 38,
+    "renderedTriangles": 6860,
+    "filteredNodes": 0,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 13720
+  },
+  {
+    "id": "hdd",
+    "file": "hdd.glb",
+    "bytes": 392156,
+    "meshes": 39,
+    "triangles": 6864,
+    "materials": 7,
+    "bounds": [
+      0.036,
+      0.117,
+      0.1639
+    ],
+    "radius": 0.10227,
+    "distance": 0.37069,
+    "renderCalls": 39,
+    "renderedTriangles": 6864,
+    "filteredNodes": 0,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 13728
+  },
+  {
+    "id": "psu",
+    "file": "psu.glb",
+    "bytes": 1210952,
+    "meshes": 108,
+    "triangles": 34376,
+    "materials": 9,
+    "bounds": [
+      0.1651,
+      0.3351,
+      0.3265
+    ],
+    "radius": 0.24805,
+    "distance": 0.89906,
+    "renderCalls": 108,
+    "renderedTriangles": 34376,
+    "filteredNodes": 0,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 68752
+  },
+  {
+    "id": "case-fans",
+    "file": "case_fans.glb",
+    "bytes": 276744,
+    "meshes": 92,
+    "triangles": 4896,
+    "materials": 8,
+    "bounds": [
+      0.12,
+      0.387,
+      0.4879
+    ],
+    "radius": 0.31711,
+    "distance": 1.14933,
+    "renderCalls": 92,
+    "renderedTriangles": 4896,
+    "filteredNodes": 0,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 9792
+  },
+  {
+    "id": "optical-drive",
+    "file": "optical_drive.glb",
+    "bytes": 367216,
+    "meshes": 49,
+    "triangles": 6472,
+    "materials": 9,
+    "bounds": [
+      0.395,
+      0.1833,
+      0.2213
+    ],
+    "radius": 0.24422,
+    "distance": 0.88516,
+    "renderCalls": 49,
+    "renderedTriangles": 6472,
+    "filteredNodes": 0,
+    "correctedMaterials": "",
+    "stereoRenderedTriangles": 12944
+  }
+]

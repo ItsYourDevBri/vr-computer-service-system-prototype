@@ -1,0 +1,16 @@
+BLENDER-CSS-04 CPU COOLER VALIDATION REPORT
+
+Source alignment:
+CPU origin / MB_MOUNT_CPU: (-0.083, 0.03, 0.345)
+Existing socket envelope: approximately 52 x 52 mm
+Mounting pattern used: centered 78 x 78 mm LGA1700 pattern
+CPU package nominal: 37.5 x 45.0 x 4.4 mm
+Cooler target dimensions: 120 W x 75 D x 158 H mm nominal
+Cooler structure: aluminum fin stack, four copper heat pipes, contact base, removable 120 mm fan, clips, brackets, backplate, screws, standoffs
+Independent removal: fan is parented under COOLER_Fan; cooler parts remain separate/selectable
+Chassis bounds checked: approximately 210 W x 468 D x 460 H mm
+CPU contact alignment: centered on existing CPU origin
+GLB export: SUCCESS
+Existing collections preserved: 01_Computer_Case, 02_Motherboard, 03_CPU
+Component 05 modeled: NO
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_CPU_Cooler.blend

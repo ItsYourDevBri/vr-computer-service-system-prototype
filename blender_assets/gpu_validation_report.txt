@@ -1,0 +1,30 @@
+BLENDER-CSS-06 GPU VALIDATION REPORT
+Master: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_GPU.blend
+Blender: 5.2.3 LTS
+
+DESIGN / FIT
+Selected interface: PCIe x16, MB_PCIeSlot_01.
+Actual slot bounds: X -79.5..-69.5, Y -70..100, Z 200..210 mm.
+Rear expansion stack: Y 203.44..208.99 mm, Z 157.60..250.19 mm.
+GPU measured overall bounds: X -86.50..-22.50, Y -120.00..210.00, Z 160.00..297.00 mm.
+Compact dual-fan design chosen because the reference 267 mm length was not required by the measured chassis envelope.
+
+VALIDATION
+PCIe marker alignment: PASS — 0.000 mm.
+PCIe gold connector vs x16 slot bounds: PASS — connector Y -68.85..99.35 mm within slot Y -70..100 mm; connector Z 203.50..204.50 mm within slot Z 200..210 mm.
+Rear I/O bracket alignment: PASS — bracket Y 200.25..205.75 mm overlaps expansion stack Y 203.44..208.99 mm.
+GPU vs motherboard non-slot geometry: PASS — 0 intersections.
+GPU vs RAM: PASS — 0 intersections.
+GPU vs CPU cooler: PASS — 0 intersections.
+GPU vs chassis non-expansion geometry: PASS — 0 intersections.
+Glass-panel clearance: 6.12 mm — PASS.
+Solid-panel clearance: 118.79 mm — PASS.
+Top clearance: 144.28 mm — PASS.
+PSU-shroud clearance: 53.62 mm — PASS.
+Removal path +X samples (mm, MB/RAM/Cooler/Case hits): [(0, 0, 0, 0, 0), (10, 0, 0, 0, 0), (20, 0, 0, 0, 0), (30, 0, 0, 0, 0), (40, 0, 0, 0, 0)]
+Removal path validation: PASS.
+GLB export: PASS.
+Object hierarchy: PASS — dedicated 06_GPU collection, GPU_ROOT, independent fans/heatsink/backplate/bracket/markers.
+No Component 07 created.
+OVERALL: PASS — Component 06 GPU is mechanically compatible and ready for visual approval.

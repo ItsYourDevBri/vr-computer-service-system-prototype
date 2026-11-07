@@ -1,0 +1,15 @@
+BLENDER-CSS-02 — ATX Motherboard Validation Report
+Collection: 02_Motherboard
+Nominal/world MB_PCB dimensions (mm): (1.6, 244.0, 305.0)
+Installed orientation: vertical plane on case left interior wall; components face glass side
+Chassis correction: CASE_MotherboardTray and CASE_Standoff_ATX_01..09 corrected to ATX-compatible Y/Z mounting plane; case shell/removable panels preserved
+Mounting-hole to standoff center deltas (mm): [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Rear I/O: simplified ports placed along case rear edge
+Attachment empties: MB_MOUNT_CPU, MB_MOUNT_CPUCooler, MB_MOUNT_RAM_01..04, MB_MOUNT_GPU, MB_MOUNT_M2_01, MB_MOUNT_Power_24Pin, MB_MOUNT_Power_8Pin
+CPU platform: illustrative LGA1700; memory: DDR4; no installed CPU/RAM/GPU/SSD/cooler
+Case collection preserved: 157 objects
+Motherboard collection objects: 208
+GLB export: succeeded
+Renders: motherboard_isometric.png, motherboard_top.png, motherboard_rear_io.png, motherboard_installed_in_case.png
+Backup: ATX_Mid_Tower_Master_before_MB.blend
+Master: ATX_Mid_Tower_Master.blend

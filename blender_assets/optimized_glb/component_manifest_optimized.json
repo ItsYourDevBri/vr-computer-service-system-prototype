@@ -1,0 +1,333 @@
+{
+  "master": "/Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master.blend",
+  "blender_version": "5.2.3 LTS",
+  "optimized_directory": "/Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/optimized_glb",
+  "components": {
+    "01_Computer_Case": {
+      "source_files": [
+        "computer_case.glb"
+      ],
+      "before": {
+        "objects": 108,
+        "meshes": 99,
+        "vertices": 4896,
+        "triangles": 9420,
+        "materials": 12,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 108,
+        "meshes": 99,
+        "vertices": 4896,
+        "triangles": 9420,
+        "materials": 12,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 99
+      },
+      "exports": {
+        "computer_case.glb": {
+          "original_size_bytes": 1603824,
+          "optimized_size_bytes": 1011904,
+          "optimized_exists": true
+        }
+      }
+    },
+    "02_Motherboard": {
+      "source_files": [
+        "motherboard.glb"
+      ],
+      "before": {
+        "objects": 208,
+        "meshes": 197,
+        "vertices": 2248,
+        "triangles": 3708,
+        "materials": 11,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 208,
+        "meshes": 197,
+        "vertices": 2248,
+        "triangles": 3708,
+        "materials": 11,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 197
+      },
+      "exports": {
+        "motherboard.glb": {
+          "original_size_bytes": 10770708,
+          "optimized_size_bytes": 742400,
+          "optimized_exists": true
+        }
+      }
+    },
+    "03_CPU": {
+      "source_files": [
+        "cpu.glb"
+      ],
+      "before": {
+        "objects": 16,
+        "meshes": 12,
+        "vertices": 2136,
+        "triangles": 3224,
+        "materials": 5,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 16,
+        "meshes": 12,
+        "vertices": 2136,
+        "triangles": 3224,
+        "materials": 5,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 12
+      },
+      "exports": {
+        "cpu.glb": {
+          "original_size_bytes": 10385976,
+          "optimized_size_bytes": 552852,
+          "optimized_exists": true
+        }
+      }
+    },
+    "04_CPU_Cooler": {
+      "source_files": [
+        "cpu_cooler.glb"
+      ],
+      "before": {
+        "objects": 45,
+        "meshes": 35,
+        "vertices": 920,
+        "triangles": 1568,
+        "materials": 5,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 45,
+        "meshes": 35,
+        "vertices": 920,
+        "triangles": 1568,
+        "materials": 5,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 35
+      },
+      "exports": {
+        "cpu_cooler.glb": {
+          "original_size_bytes": 10770708,
+          "optimized_size_bytes": 584688,
+          "optimized_exists": true
+        }
+      }
+    },
+    "05_RAM": {
+      "source_files": [
+        "ram.glb"
+      ],
+      "before": {
+        "objects": 136,
+        "meshes": 126,
+        "vertices": 1008,
+        "triangles": 1512,
+        "materials": 6,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 136,
+        "meshes": 126,
+        "vertices": 1008,
+        "triangles": 1512,
+        "materials": 6,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 126
+      },
+      "exports": {
+        "ram.glb": {
+          "original_size_bytes": 11921732,
+          "optimized_size_bytes": 742168,
+          "optimized_exists": true
+        }
+      }
+    },
+    "06_GPU": {
+      "source_files": [
+        "gpu.glb"
+      ],
+      "before": {
+        "objects": 118,
+        "meshes": 112,
+        "vertices": 2400,
+        "triangles": 4360,
+        "materials": 11,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 118,
+        "meshes": 112,
+        "vertices": 2400,
+        "triangles": 4360,
+        "materials": 11,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 112
+      },
+      "exports": {
+        "gpu.glb": {
+          "original_size_bytes": 1102336,
+          "optimized_size_bytes": 728036,
+          "optimized_exists": true
+        }
+      }
+    },
+    "07_Storage": {
+      "source_files": [
+        "ssd.glb",
+        "hdd.glb"
+      ],
+      "before": {
+        "objects": 85,
+        "meshes": 73,
+        "vertices": 952,
+        "triangles": 1612,
+        "materials": 8,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 85,
+        "meshes": 73,
+        "vertices": 952,
+        "triangles": 1612,
+        "materials": 8,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 73
+      },
+      "exports": {
+        "ssd.glb": {
+          "original_size_bytes": 390176,
+          "optimized_size_bytes": 390176,
+          "optimized_exists": true
+        },
+        "hdd.glb": {
+          "original_size_bytes": 392156,
+          "optimized_size_bytes": 392156,
+          "optimized_exists": true
+        }
+      }
+    },
+    "08_PSU": {
+      "source_files": [
+        "psu.glb"
+      ],
+      "before": {
+        "objects": 116,
+        "meshes": 102,
+        "vertices": 4720,
+        "triangles": 9048,
+        "materials": 9,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 116,
+        "meshes": 102,
+        "vertices": 4720,
+        "triangles": 9048,
+        "materials": 9,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 102
+      },
+      "exports": {
+        "psu.glb": {
+          "original_size_bytes": 1210952,
+          "optimized_size_bytes": 1210952,
+          "optimized_exists": true
+        }
+      }
+    },
+    "09_Case_Fans": {
+      "source_files": [
+        "case_fans.glb"
+      ],
+      "before": {
+        "objects": 108,
+        "meshes": 88,
+        "vertices": 1664,
+        "triangles": 2976,
+        "materials": 8,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 108,
+        "meshes": 88,
+        "vertices": 1664,
+        "triangles": 2976,
+        "materials": 8,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 88
+      },
+      "exports": {
+        "case_fans.glb": {
+          "original_size_bytes": 276744,
+          "optimized_size_bytes": 276744,
+          "optimized_exists": true
+        }
+      }
+    },
+    "10_Optical_Drive": {
+      "source_files": [
+        "optical_drive.glb"
+      ],
+      "before": {
+        "objects": 55,
+        "meshes": 47,
+        "vertices": 2024,
+        "triangles": 3864,
+        "materials": 9,
+        "textures": 0,
+        "bounds_mm": null
+      },
+      "after": {
+        "objects": 55,
+        "meshes": 47,
+        "vertices": 2024,
+        "triangles": 3864,
+        "materials": 9,
+        "textures": 0,
+        "bounds_mm": null,
+        "decimated_meshes": 0,
+        "preserved_meshes": 47
+      },
+      "exports": {
+        "optical_drive.glb": {
+          "original_size_bytes": 367216,
+          "optimized_size_bytes": 367216,
+          "optimized_exists": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+BLENDER-CSS-03 CPU VALIDATION REPORT
+
+Socket standard: Intel LGA1700 (illustrative project socket)
+Existing socket envelope: approximately 52 x 52 mm; CPU marker matched.
+CPU package: generic, unbranded LGA1700-compatible educational package
+Confirmed package dimensions (W x H x T): 37.5 x 45.0 x 4.4 mm nominal
+Measured complete mesh bounds (X depth, Y width, Z height): 4.80 x 37.80 x 45.00 mm
+Installation origin: MB_MOUNT_CPU at (-0.083, 0.03, 0.345)
+CPU_ROOT origin delta to MB_MOUNT_CPU: 0.0000 mm
+Features: substrate, IHS, perimeter, underside contact pads, keying, orientation marker, printed marks
+Cooler modeled: NO (reserved for Component 04)
+Existing collections preserved: 01_Computer_Case, 02_Motherboard
+GLB export: SUCCESS
+Backup: /Users/brian/Documents/ChatGPT/components-css-prototype/blender_assets/ATX_Mid_Tower_Master_before_CPU.blend
