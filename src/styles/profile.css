@@ -1,0 +1,83 @@
+/* CSS-UI-01E: compact activation navigation and direct profile editing */
+.activation-header {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.activation-header .activation-back-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #d0d9e2;
+  font-size: 13px;
+  font-weight: 560;
+  text-decoration: none;
+}
+.activation-header .activation-back-link:hover { color: #fff; }
+.activation-header .brand-lockup { flex: none; }
+.activation-header .brand-logo-image { width: 46px; height: 46px; }
+.activation-card .auth-card-heading { margin-bottom: 18px; }
+.activation-card .auth-card-heading h2 { text-align: left; }
+
+.profile-settings-form { width: 100%; }
+.profile-editor-panel {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(20px, 4vw, 42px);
+  padding: clamp(20px, 3vw, 32px);
+}
+.profile-avatar-column { display: grid; justify-items: center; gap: 16px; }
+.profile-avatar-trigger {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 6px;
+  border: 0;
+  border-radius: 10px;
+  color: #b9c8d4;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.profile-avatar-trigger:hover, .profile-avatar-trigger:focus-visible { color: #fff; outline: 2px solid #27c6bd; outline-offset: 3px; }
+.profile-avatar-trigger .avatar-profile { width: 88px; height: 88px; font-size: 22px; }
+.profile-avatar-options { justify-content: center; }
+.profile-fields-column { display: grid; min-width: 0; gap: 18px; }
+.profile-identity-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.profile-identity-grid .text-input[readonly] { color: #c3ced9; background: rgb(255 255 255 / 4%); }
+.profile-save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.profile-save-row .button { min-width: 150px; min-height: 46px; }
+.profile-save-status { margin: 0; color: #8bd9d2; font-size: 12px; }
+.profile-settings-page .page-heading { align-items: flex-start; }
+.profile-settings-page .page-heading h1 { font-size: clamp(28px, 3vw, 36px); }
+
+@media (max-width: 760px) {
+  .activation-header { min-height: 44px; margin-bottom: 16px; }
+  .activation-header .activation-back-link { min-height: 44px; font-size: 12px; }
+  .activation-header .brand-logo-image { width: 42px; height: 42px; }
+  .profile-editor-panel { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 18px; }
+  .profile-avatar-column { justify-items: stretch; }
+  .profile-avatar-trigger { display: flex; width: fit-content; align-items: center; }
+  .profile-avatar-trigger .avatar-profile { width: 64px; height: 64px; font-size: 17px; }
+  .profile-avatar-options { justify-content: flex-start; }
+  .profile-fields-column { gap: 15px; }
+  .profile-identity-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .profile-save-row { align-items: stretch; flex-direction: column; }
+  .profile-save-row .button { width: 100%; }
+}
+
+@media (max-width: 360px) {
+  .activation-header { gap: 8px; }
+  .activation-header .activation-back-link { gap: 5px; font-size: 11px; }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .landing-page { padding-top: max(8px, env(safe-area-inset-top)); }.landing-header { min-height: 52px; }.landing-identity .brand-symbol { width: 30px; height: 30px; }.landing-identity .brand-name { font-size: 11px; }.institution-full-name { font-size: 8px; }.landing-nav a { min-height: 36px; }.landing-hero { flex: 1 0 auto; padding-block: 22px; }.landing-eyebrow { margin-bottom: 8px; font-size: 8px; }.landing-hero h1 { max-width: 760px; margin-bottom: 8px; font-size: clamp(1.75rem, 4vw, 2.5rem); }.landing-description { max-width: 620px; font-size: 10px; line-height: 1.45; }.landing-actions { margin-top: 12px; }.landing-actions .button { min-height: 40px; }.landing-feature { padding-block: 8px 6px; }.landing-feature > svg { width: 20px; height: 20px; }.landing-feature p { font-size: 7px; }.landing-footer { padding-top: 5px; font-size: 6px; }
+  .auth-scene { align-items: flex-start; padding-block: max(10px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-bottom)); }.centered-auth-card { padding-block: 13px; }.auth-brand-lockup { grid-template-columns: auto 1fr; align-items: center; justify-items: start; gap: 2px 9px; margin-bottom: 9px; text-align: left; }.auth-brand-lockup .brand-symbol { grid-row: 1 / span 2; width: 32px; height: 32px; }.auth-brand-lockup p { justify-self: start; text-align: left; }.centered-auth-card .auth-card-heading { margin-bottom: 8px; }.centered-auth-card .auth-card-heading h1 { font-size: 20px; }.auth-tabs { margin-bottom: 8px; }.centered-login-form { gap: 4px; }.centered-login-form .input-wrap { min-height: 40px; }.centered-login-form .password-toggle { height: 40px; }.centered-login-button { min-height: 40px; margin-top: 3px; }.auth-divider { margin-block: 7px 4px; }.role-fieldset-centered legend { margin-bottom: 4px; }.role-choice-card { min-height: 48px; }.role-choice-card svg { width: 16px; height: 16px; }.login-simulation-note { margin-top: 5px; }
+}

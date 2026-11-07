@@ -1,0 +1,60 @@
+/* CSS-UI-01A: photographic landing and centered access screens */
+.landing-page, .auth-scene { position: relative; isolation: isolate; color: #f4f6fa; background: #101827; }
+.cinematic-photo { position: fixed; z-index: -1; inset: 0; background-image: linear-gradient(90deg, rgb(5 13 20 / 80%) 0%, rgb(7 15 23 / 55%) 55%, rgb(7 15 23 / 66%) 100%), linear-gradient(0deg, rgb(5 13 20 / 58%) 0%, transparent 45%, rgb(5 13 20 / 24%) 100%), url('/images/mite-computer-lab.jpg'); background-repeat: no-repeat; background-position: center, center, center 52%; background-size: cover; }
+.landing-page { display: flex; min-height: 100svh; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) clamp(18px, 4vw, 60px) max(14px, env(safe-area-inset-bottom)); overflow: clip; }
+.landing-header { display: grid; grid-template-columns: minmax(260px, 1fr) auto auto; align-items: center; gap: clamp(18px, 3vw, 48px); width: 100%; min-height: 68px; border-bottom: 1px solid rgb(226 236 240 / 16%); }
+.landing-identity { display: flex; min-width: 0; align-items: center; gap: 14px; }
+.landing-identity .brand-symbol { width: 38px; height: 38px; color: #41d0c8; border-color: transparent; background: transparent; }
+.landing-identity .brand-name { color: #f4f6fa; font-size: 14px; }
+.institution-full-name { max-width: 230px; padding-left: 13px; border-left: 1px solid rgb(219 229 235 / 25%); color: #d5dee4; font-size: 10.5px; line-height: 1.45; }
+.landing-nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 44px); }
+.landing-nav a { position: relative; display: inline-flex; min-height: 44px; align-items: center; color: #d0d8df; font-size: 11px; text-decoration: none; }
+.landing-nav a::after { position: absolute; right: 0; bottom: 3px; left: 0; height: 2px; background: #24b8b0; content: ''; transform: scaleX(0); transform-origin: left; transition: transform .16s ease; }
+.landing-nav a:hover::after, .landing-nav a.is-current::after { transform: scaleX(1); }
+.landing-login-link { min-height: 42px; padding-inline: 15px; border-radius: 999px; white-space: nowrap; }
+.landing-hero { display: flex; width: min(100%, 730px); flex: 1; flex-direction: column; justify-content: center; padding-block: clamp(44px, 8vh, 90px); scroll-margin-top: 24px; }
+.landing-eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 17px; color: #54d1c9; font-size: 10px; font-weight: 760; letter-spacing: .16em; }
+.landing-eyebrow span { width: 18px; height: 2px; background: #24b8b0; }
+.landing-hero h1 { max-width: 720px; margin: 0 0 16px; color: #f7f8fa; font-size: clamp(2.5rem, 4.5vw, 4.15rem); font-weight: 660; letter-spacing: -.055em; line-height: 1.04; text-wrap: balance; text-shadow: 0 2px 18px rgb(0 0 0 / 25%); }
+.landing-description { max-width: 570px; margin: 0; color: #e0e6ea; font-size: clamp(13px, 1.2vw, 16px); line-height: 1.72; text-shadow: 0 1px 8px rgb(0 0 0 / 35%); }
+.landing-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 24px; }
+.landing-actions .button { min-height: 48px; padding-inline: 19px; border-radius: 999px; font-size: 11px; }
+.landing-start { color: #062124; }
+.button-outline-light { border-color: rgb(239 245 248 / 76%); color: #f5f8fa; background: rgb(9 18 27 / 28%); }.button-outline-light:hover { background: rgb(255 255 255 / 9%); }
+.landing-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(100%, 970px); border-top: 1px solid rgb(222 232 237 / 22%); scroll-margin-top: 25px; }
+.landing-feature { display: flex; min-width: 0; align-items: flex-start; gap: 12px; padding: 17px 17px 13px 4px; }
+.landing-feature + .landing-feature { padding-left: 17px; border-left: 1px solid rgb(222 232 237 / 16%); }
+.landing-feature > svg { flex: none; color: #36d0c7; }
+.landing-feature h2 { margin: 1px 0 5px; color: #f2f5f7; font-size: 11px; font-weight: 680; }
+.landing-feature p { max-width: 220px; margin: 0; color: #c8d1d8; font-size: 9px; line-height: 1.55; }
+.landing-footer { display: flex; justify-content: space-between; gap: 12px; padding-top: 11px; color: #adb9c2; font-size: 8px; letter-spacing: .07em; }
+.landing-footer span:first-child { color: #d8e0e5; font-weight: 700; letter-spacing: .12em; }
+.auth-scene { display: flex; min-height: 100svh; align-items: center; justify-content: center; padding: max(26px, env(safe-area-inset-top)) 16px max(26px, env(safe-area-inset-bottom)); }
+.auth-scene .cinematic-photo { background-image: linear-gradient(0deg, rgb(5 12 19 / 57%), rgb(5 12 19 / 57%)), url('/images/mite-computer-lab.jpg'); background-position: center, center 53%; }
+.auth-center-content { display: flex; width: 100%; justify-content: center; }
+.centered-auth-card { width: min(100%, 456px); padding: 25px clamp(20px, 3vw, 31px) 22px; border: 1px solid rgb(182 203 213 / 24%); border-radius: 10px; background: rgb(9 18 27 / 88%); box-shadow: 0 18px 60px rgb(0 0 0 / 36%); backdrop-filter: blur(8px); }
+.auth-brand-lockup { display: grid; justify-items: center; gap: 5px; margin-bottom: 17px; text-align: center; }
+.auth-brand-lockup .brand-symbol { width: 38px; height: 38px; color: #3bd0c7; border-color: rgb(36 184 176 / 40%); background: rgb(36 184 176 / 7%); }
+.auth-brand-lockup .brand-name { font-size: 14px; }
+.auth-brand-lockup p { max-width: 100%; margin: 0; color: #c7d1d8; font-size: 10.5px; font-weight: 500; line-height: 1.45; }
+.centered-auth-card .auth-card-heading { margin-bottom: 16px; text-align: center; }
+.centered-auth-card .auth-card-heading h1 { max-width: none; margin: 0 0 5px; font-size: 25px; font-weight: 620; letter-spacing: -.035em; }
+.centered-auth-card .auth-card-heading > p { margin: 0; color: #d0d9df; font-size: 11px; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 17px; overflow: hidden; border: 1px solid rgb(173 196 206 / 28%); border-radius: 6px; background: rgb(255 255 255 / 4%); }
+.auth-tabs > * { display: flex; min-height: 40px; align-items: center; justify-content: center; border: 0; color: #e0e6ea; background: transparent; font: inherit; font-size: 10px; text-decoration: none; cursor: pointer; }
+.auth-tabs > * + * { border-left: 1px solid rgb(173 196 206 / 23%); }
+.auth-tabs .is-selected { color: #f5ffff; background: linear-gradient(100deg, #078d89, #079f99); box-shadow: inset 0 -2px #34d2ca; }
+.centered-login-form { gap: 7px; }.centered-login-form .field-label { color: #edf1f4; font-size: 10px; }.centered-login-form .input-wrap { min-height: 46px; border-color: rgb(168 190 201 / 24%); border-radius: 5px; background: rgb(255 255 255 / 4%); }.centered-login-form .input-wrap input { font-size: 11px; }.centered-login-form .field-row-label { margin-top: 3px; }.centered-login-form .field-row-label a { color: #3bd0c7; font-size: 9px; }.centered-login-button { min-height: 46px; margin-top: 9px; border-radius: 6px; color: #f3ffff; background: linear-gradient(100deg, #078b86, #079e97); font-size: 11px; }.centered-login-button:hover { background: linear-gradient(100deg, #09a09a, #0aada5); }
+.auth-divider { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 14px 0 8px; color: #c7d1d7; font-size: 9px; }.auth-divider span { height: 1px; background: rgb(176 198 207 / 22%); }
+.role-fieldset-centered { margin: 0; }.role-fieldset-centered legend { width: 100%; margin-bottom: 8px; color: #d6dfe4; font-size: 9px; text-align: center; }.role-choice-card { min-height: 60px; flex-direction: column; gap: 5px; border-color: rgb(171 194 204 / 34%); border-radius: 6px; color: #e2e9ed; background: rgb(255 255 255 / 3%); font-size: 9px; }.role-choice-card svg { color: #18c7c0; }.role-choice-card.is-selected { border-color: #2cc7c0; background: rgb(36 184 176 / 11%); box-shadow: inset 0 0 0 1px rgb(36 184 176 / 12%); }.login-simulation-note { margin: 10px 0 0; color: #9faeb8; font-size: 8px; line-height: 1.5; text-align: center; }
+.centered-auth-card .inline-success { margin: 0 0 12px; }.activation-back-link { display: flex; justify-content: flex-end; margin: -8px 0 11px; }.activation-back-link .back-link { display: inline-flex; min-height: 34px; align-items: center; gap: 5px; color: #aebbc4; font-size: 9px; text-decoration: none; }.activation-back-link .back-link:hover { color: #f4f6fa; }.activation-card .auth-card-heading h2 { text-align: center; }.activation-card .auth-brand-lockup { margin-bottom: 12px; }.auth-scene-compact .activation-card { width: min(100%, 510px); padding: 20px clamp(15px, 2vw, 25px); }.auth-scene-compact .activation-card .auth-card-footer { margin-top: 12px; }.activation-card .invitation-summary { background: rgb(36 184 176 / 7%); }.activation-card .auth-form .button { margin-top: 3px; }.profile-card .auth-card-heading h2 { text-align: center; }.profile-setup-tag { margin: -8px 0 12px; color: #6ad3cc; font-size: 8px; font-weight: 750; letter-spacing: .13em; text-align: center; }.auth-scene-compact .profile-card { width: min(100%, 456px); }.auth-scene-compact .recovery-card { width: min(100%, 456px); }
+
+@media (max-width: 760px) {
+.institution-full-name { font-size: 9px; }
+  .landing-page { padding-inline: 17px; }.landing-header { grid-template-areas: 'identity action' 'nav nav'; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; padding-bottom: 4px; }.landing-identity { grid-area: identity; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1px 8px; align-items: center; }.landing-identity .brand-lockup { grid-column: 1 / -1; }.landing-identity .brand-symbol { width: 32px; height: 32px; }.landing-identity .brand-name { font-size: 12px; }.institution-full-name { grid-column: 1 / -1; max-width: 100%; padding: 0; border: 0; color: #e0e7eb; font-size: 9px; line-height: 1.4; }.landing-nav { grid-area: nav; justify-content: center; gap: clamp(24px, 9vw, 48px); border-top: 1px solid rgb(222 232 237 / 13%); }.landing-nav a { min-height: 38px; font-size: 10px; }.landing-login-link { grid-area: action; min-height: 40px; padding-inline: 12px; font-size: 9px; }.landing-hero { flex: 0 0 auto; padding-block: clamp(47px, 10vh, 85px); }.landing-hero h1 { max-width: 620px; font-size: clamp(2.25rem, 9vw, 3.15rem); }.landing-description { max-width: 540px; font-size: 12px; }.landing-features { gap: 0; }.landing-feature { flex-direction: column; gap: 7px; padding: 12px 8px 10px 1px; }.landing-feature + .landing-feature { padding-left: 9px; }.landing-feature > svg { width: 24px; height: 24px; }.landing-feature h2 { margin-bottom: 4px; font-size: 9px; line-height: 1.35; }.landing-feature p { font-size: 8px; line-height: 1.45; }.landing-footer { padding-top: 9px; font-size: 7px; }.landing-footer span:last-child { text-align: right; }
+  .auth-scene { align-items: center; padding-inline: 14px; }.auth-scene .cinematic-photo { background-position: center, 56% center; }.centered-auth-card { padding: 21px 19px 18px; }.auth-brand-lockup { margin-bottom: 14px; }.centered-auth-card .auth-card-heading h1 { font-size: 23px; }.auth-tabs { margin-bottom: 14px; }.auth-tabs > * { min-height: 42px; }.role-choice-card { min-height: 58px; }.auth-scene-compact { align-items: flex-start; padding-block: max(14px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-bottom)); }.auth-scene-compact .activation-card { padding: 15px; }.activation-card .auth-card-heading { margin-bottom: 13px; }.activation-form .privacy-note { margin: 2px 0; font-size: 9px; }
+}
+@media (max-width: 360px) {
+  .landing-page { padding-inline: 13px; }.landing-header { column-gap: 7px; }.landing-login-link { gap: 5px; padding-inline: 9px; font-size: 8px; }.landing-identity { max-width: 100%; }.institution-full-name { font-size: 8.25px; }.landing-nav { gap: 25px; }.landing-hero h1 { font-size: 2.1rem; }.landing-feature { padding-right: 5px; }.landing-feature + .landing-feature { padding-left: 6px; }.landing-feature h2 { font-size: 8px; }.landing-feature p { font-size: 7px; }
+  .auth-scene { padding-inline: 10px; }.centered-auth-card { padding-inline: 15px; }.auth-brand-lockup p { font-size: 9px; }.role-choice-card { font-size: 8px; }
+}

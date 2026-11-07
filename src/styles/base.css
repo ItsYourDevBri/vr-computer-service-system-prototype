@@ -1,0 +1,19 @@
+* { box-sizing: border-box; }
+.nav-caption::before { content: "WORKSPACE"; }
+
+h1, h2, h3, h4, p, ul, ol, figure, fieldset { margin: 0; }
+ul, ol { padding: 0; }
+button, input, select, textarea { color: inherit; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 82% 12%, rgb(36 184 176 / 8%), transparent 34rem),
+    #101827;
+}
+
+button, a { font: inherit; }
+a { color: inherit; }
+a:focus-visible { outline: 2px solid #24b8b0; outline-offset: 4px; }

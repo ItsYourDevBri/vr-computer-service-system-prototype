@@ -1,0 +1,22 @@
+{
+  "name": "css-vr-training-application",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "validate:js": "node scripts/check-js.js",
+    "build": "npm run validate:js && vite build",
+    "lint": "oxlint src tests scripts vite.config.js playwright.config.js",
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "oxlint": "^1.90.0",
+    "vite": "^8.3.6"
+  }
+}
