@@ -17,12 +17,12 @@ const activityDetails = {
   '/student/assembly': {
     title: 'Guided Assembly',
     eyebrow: 'GUIDED INSTALLATION',
-    description: 'A step-by-step installation walkthrough will be added in a later phase.',
+    description: 'Remove the case panel and inspect the supplied motherboard fit demonstration.',
   },
   '/student/disassembly': {
     title: 'Guided Disassembly',
     eyebrow: 'GUIDED REMOVAL',
-    description: 'A step-by-step component removal walkthrough will be added in a later phase.',
+    description: 'Practice the verified glass-panel removal and reversal.',
   },
 }
 
@@ -106,25 +106,80 @@ function hardwareWorkspace() {
   </div>`
 }
 
-function activityPlaceholder(path) {
-  const details = activityDetails[path]
-  const type = path === '/student/assembly' ? 'assembly' : 'disassembly'
-  return `<div class="activity-placeholder-layout">
-    <section class="activity-placeholder-card" aria-labelledby="placeholder-title">
-      <div class="activity-placeholder-icon">${icon(type === 'assembly' ? 'Layers3' : 'PackageOpen', 38)}</div>
-      <span class="activity-eyebrow">${escapeHTML(details.eyebrow)}</span>
-      <h2 id="placeholder-title">${escapeHTML(details.title)} workspace</h2>
-      <p>${escapeHTML(details.description)}</p>
-      <div class="activity-not-ready" role="status">This activity is not interactive yet. The shared landscape workspace is ready for its future walkthrough.</div>
-      <a class="activity-return-link" href="/student/dashboard">Back to Student Dashboard ${icon('ArrowRight', 15)}</a>
+function assemblyWorkspace(path) {
+  const isAssembly = path === '/student/assembly'
+  const heading = isAssembly ? 'Assembly steps' : 'Disassembly steps'
+  const panelAction = isAssembly ? 'Prepare the case' : 'Remove the glass panel'
+  const secondStep = isAssembly
+    ? '<li data-sequence-step="1"><span>02</span><span><strong>Motherboard fit check</strong><small>Exploded preview · install blocked</small></span></li>'
+    : ''
+  const unavailableNote = isAssembly
+    ? ''
+    : '<p class="assembly-unavailable-note"><strong>Motherboard removal unavailable</strong><span>No verified installed motherboard pose or removal path is available.</span></p>'
+  const count = isAssembly ? '2' : '1'
+  const canvasAttribute = isAssembly ? 'data-assembly-canvas' : 'data-disassembly-canvas'
+  const sceneStatus = isAssembly ? 'Loading the case and motherboard reference GLBs…' : 'Loading the verified case GLB…'
+  const stereoStep = `<section class="assembly-stereo-step assembly-stereo-step-left" aria-hidden="true"><span class="activity-eyebrow" data-stereo-step-label>STEP 01 / ${count}</span><h2 data-stereo-step-title>${isAssembly ? 'Prepare the computer case' : 'Open the computer case'}</h2><p data-stereo-instruction>Remove the tempered-glass side panel.</p><small data-stereo-status>${isAssembly ? 'Verified removable case panel' : 'One verified removal step'}</small></section>
+    <section class="assembly-stereo-step assembly-stereo-step-right" role="status" aria-live="polite" aria-label="Current guided instruction"><span class="activity-eyebrow" data-stereo-step-label>STEP 01 / ${count}</span><h2 data-stereo-step-title>${isAssembly ? 'Prepare the computer case' : 'Open the computer case'}</h2><p data-stereo-instruction>Remove the tempered-glass side panel.</p><small data-stereo-status>${isAssembly ? 'Verified removable case panel' : 'One verified removal step'}</small></section>`
+
+  return `<div class="assembly-layout" data-assembly-layout data-guided-activity="${isAssembly ? 'assembly' : 'disassembly'}">
+    <aside class="assembly-parts-panel" aria-label="Guided sequence overview">
+      <div class="activity-panel-heading"><div><span class="activity-eyebrow">${isAssembly ? 'INSTALLATION' : 'REMOVAL'}</span><h2>${heading}</h2></div><span class="activity-count">${count}</span></div>
+      <ol class="assembly-step-list" aria-label="${heading}" data-assembly-step-list>
+        <li data-sequence-step="0" aria-current="step"><span>01</span><span><strong>${panelAction}</strong><small>Animate the removable case panel</small></span></li>
+        ${secondStep}
+      </ol>
+      ${unavailableNote}
+      ${isAssembly ? '<p class="assembly-tray-note">The motherboard step is an exploded fit preview only. Installation stays unavailable until the tray, board, standoffs, rear I/O, and attached components pass fit validation.</p>' : '<p class="assembly-tray-note">This scene starts with the case only. Additional component removals remain unavailable until their installed transforms are verified.</p>'}
+    </aside>
+    <section class="assembly-scene-column" aria-label="Guided 3D ${isAssembly ? 'assembly' : 'disassembly'} workbench">
+      <div class="assembly-scene-toolbar"><div><span class="activity-eyebrow">COMPUTER WORKBENCH</span><span data-assembly-viewer-status role="status" aria-live="polite">${sceneStatus}</span></div>
+        <button type="button" class="viewer-reset-button" data-assembly-action="reset-view" aria-label="Reset camera view">${icon('RotateCcw', 16)}<span>Reset view</span></button>
+      </div>
+      <div class="assembly-scene-stage viewer-stage" data-assembly-stage data-render-mode="normal">
+        <canvas class="hardware-canvas assembly-canvas" data-guided-canvas ${canvasAttribute} aria-label="Guided 3D scene. Use Previous and Next Step to play the component animation. Drag to orbit and scroll or pinch to zoom." tabindex="0"></canvas>
+        <div class="viewer-loading" data-assembly-loading aria-hidden="true"><span></span></div>
+        <div class="viewer-error" data-assembly-error role="alert" hidden><p data-assembly-error-message></p><button type="button" data-assembly-action="retry">Retry scene</button></div>
+        <div class="stereo-eye-label stereo-eye-left" aria-hidden="true">LEFT EYE</div>
+        <div class="stereo-eye-label stereo-eye-right" aria-hidden="true">RIGHT EYE</div>
+        ${stereoStep}
+        <div class="viewer-stereo-shade" aria-hidden="true"></div>
+        <div class="assembly-stereo-controls" role="group" aria-label="Guided step controls">
+          <button type="button" data-assembly-action="previous-step" disabled>Previous</button>
+          <button type="button" data-assembly-action="replay-step" disabled>Replay</button>
+          <button type="button" class="assembly-primary-button" data-assembly-action="next-step" disabled>Next Step</button>
+        </div>
+      </div>
+      <div class="assembly-scene-footer"><span>${isAssembly ? 'Real case and motherboard Blender GLBs · fit preview stops before the tray.' : 'Verified case GLB · further installed component poses are not available.'}</span><span class="assembly-drag-hint" data-guided-animation-hint>Step controlled</span></div>
     </section>
-    <aside class="activity-placeholder-side"><span class="activity-eyebrow">VIEWING MODES</span>${modeSwitch(true)}<p>Normal 3D and VR View will be available here when this activity’s interactive 3D content is implemented.</p></aside>
+    <aside class="assembly-guide-panel" aria-labelledby="assembly-guide-title" data-assembly-guide>
+      <div class="assembly-guide-progress"><span class="activity-eyebrow" data-assembly-step-label>STEP 01 / ${count}</span><span class="assembly-state-pill" data-assembly-state-pill>READY</span></div>
+      <h2 id="assembly-guide-title" data-assembly-step-title>${isAssembly ? 'Prepare the computer case' : 'Open the computer case'}</h2>
+      <p class="assembly-instruction" data-assembly-instruction>Use Next Step to play the guided animation.</p>
+      <div class="assembly-component-summary"><strong data-assembly-component-name>Tempered-glass side panel</strong><p data-assembly-component-function>The panel opens the case for inspection and service access.</p></div>
+      <div class="assembly-alignment-card" data-assembly-alignment>
+        <span class="assembly-alignment-icon">${icon('Crosshair', 16)}</span>
+        <span><strong data-assembly-alignment-title>Verified case component</strong><small data-assembly-alignment-description>The glass panel is independently removable.</small></span>
+      </div>
+      <p class="assembly-feedback" data-assembly-feedback role="status" aria-live="polite">Follow the step-by-step animation.</p>
+      <div class="assembly-step-actions">
+        <div class="assembly-navigation-actions">
+          <button type="button" data-assembly-action="previous-step" disabled>Previous</button>
+          <button type="button" class="assembly-primary-button" data-assembly-action="next-step" disabled>Next step</button>
+        </div>
+        <button type="button" class="assembly-text-button" data-assembly-action="replay-step" disabled>Replay step</button>
+      </div>
+    </aside>
+    <div class="assembly-live-region" data-assembly-live role="status" aria-live="polite"></div>
   </div>`
 }
 
 export function renderActivityShell(path) {
   const details = activityDetails[path] || activityDetails['/student/hardware']
   const isHardware = path === '/student/hardware'
+  const isAssembly = path === '/student/assembly'
+  const isDisassembly = path === '/student/disassembly'
+  const isGuided = isAssembly || isDisassembly
   return `<main class="learning-workspace" data-learning-activity="${escapeHTML(path)}">
     <section class="rotate-phone-gate" data-rotate-gate hidden aria-labelledby="rotate-title">
       <div class="rotate-phone-icon">${rotatePhoneIcon()}</div>
@@ -139,10 +194,11 @@ export function renderActivityShell(path) {
         ${isHardware ? '<button type="button" class="activity-panel-toggle" aria-expanded="true" aria-controls="component-library" data-activity-action="toggle-library">Components</button>' : ''}
         ${isHardware ? '<button type="button" class="activity-details-toggle" aria-expanded="true" aria-controls="component-information-body" data-activity-action="toggle-information">Details</button>' : ''}
         ${isHardware ? '<span class="portrait-mode-label">Normal 3D</span>' : ''}
-        ${modeSwitch(!isHardware)}
+        ${isGuided ? '<span class="assembly-step-indicator" data-assembly-step-indicator>STEP 01 / 02</span><button type="button" class="assembly-reset-activity" data-assembly-action="reset-activity" disabled>Reset Activity</button>' : ''}
+        ${modeSwitch(!isHardware && !isGuided)}
         <button type="button" class="activity-fullscreen-button" aria-label="Enter fullscreen" title="Enter fullscreen" data-activity-action="fullscreen">${icon('Maximize2', 17)}</button>
       </header>
-      ${isHardware ? hardwareWorkspace() : activityPlaceholder(path)}
+      ${isHardware ? hardwareWorkspace() : isGuided ? assemblyWorkspace(path) : activityPlaceholder(path)}
       <p class="activity-workspace-status" data-activity-status role="status" aria-live="polite"></p>
     </section>
   </main>`

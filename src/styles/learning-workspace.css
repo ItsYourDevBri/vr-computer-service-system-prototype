@@ -289,3 +289,145 @@ body.learning-activity-active #app { width: 100%; height: 100%; min-height: 100%
 @media (prefers-reduced-motion: reduce) {
   .viewer-loading span { animation-duration: 2s; }
 }
+
+/* Guided assembly workbench */
+.assembly-step-indicator { flex: none; color: #8ea2b3; font-size: 8px; font-weight: 750; letter-spacing: .09em; white-space: nowrap; }
+.assembly-reset-activity { min-height: 32px; flex: none; padding: 0 10px; border: 1px solid #35485a; border-radius: 4px; color: #b9c9d3; background: #162332; font: inherit; font-size: 8px; font-weight: 650; cursor: pointer; }
+.assembly-reset-activity:hover { border-color: #5b8b91; color: #e5f5f4; }
+.assembly-layout { position: relative; display: grid; min-width: 0; min-height: 0; grid-template-columns: clamp(190px, 20vw, 270px) minmax(0, 1fr) clamp(255px, 27vw, 350px); gap: 1px; overflow: hidden; background: rgb(130 151 174 / 13%); }
+.assembly-parts-panel, .assembly-guide-panel { min-width: 0; min-height: 0; overflow: auto; background: #111a27; scrollbar-color: #344558 transparent; scrollbar-width: thin; }
+.assembly-parts-panel { display: flex; flex-direction: column; }
+.assembly-step-list { display: grid; gap: 5px; margin: 0; padding: 8px; list-style: none; }
+.assembly-step-list li { display: grid; min-height: 51px; grid-template-columns: 30px minmax(0,1fr); align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid transparent; border-radius: 5px; color: #a9b6c3; background: #151f2c; }
+.assembly-step-list li[aria-current="step"] { border-color: rgb(78 192 185 / 38%); color: #e6f4f3; background: rgb(36 184 176 / 9%); }
+.assembly-step-list li.is-complete > span:first-child { color: #82d8c2; border-color: rgb(130 216 194 / 48%); }
+.assembly-step-list li.is-unavailable { opacity: .48; }
+.assembly-step-list li > span:first-child { display: grid; width: 27px; height: 27px; place-items: center; border: 1px solid #3b4d5f; border-radius: 50%; color: #8fa4b5; font-size: 8px; font-weight: 750; }
+.assembly-step-list strong, .assembly-step-list small { display: block; }
+.assembly-step-list strong { font-size: 9px; font-weight: 650; }
+.assembly-step-list small { margin-top: 4px; color: #8393a3; font-size: 7px; }
+.assembly-component-tray { margin-top: auto; padding: 10px 8px 12px; border-top: 1px solid rgb(148 165 185 / 14%); }
+.assembly-tray-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0 2px 8px; }
+.assembly-tray-heading h2 { margin: 0; color: #e6eef2; font-size: 11px; font-weight: 650; }
+.assembly-component-card { display: grid; width: 100%; min-height: 66px; grid-template-columns: 58px minmax(0,1fr) auto; align-items: center; gap: 8px; padding: 6px; border: 1px solid #354658; border-radius: 5px; color: #d6e2e8; background: #172332; text-align: left; cursor: pointer; }
+.assembly-component-card:hover, .assembly-component-card[aria-pressed="true"] { border-color: #4fc5be; background: #1a3039; }
+.assembly-component-card img { display: block; width: 58px; height: 44px; border-radius: 3px; object-fit: cover; background: #0a111a; }
+.assembly-component-card strong, .assembly-component-card small { display: block; }
+.assembly-component-card strong { font-size: 8px; font-weight: 700; }
+.assembly-component-card small { margin-top: 4px; color: #96a7b5; font-size: 7px; line-height: 1.35; }
+.assembly-part-mark { align-self: start; margin: 3px; color: #7bd4ce; font-size: 7px; font-weight: 800; }
+.assembly-tray-note { margin: 7px 2px 0; color: #8798a8; font-size: 7px; line-height: 1.45; }
+.assembly-unavailable-note { display: grid; gap: 3px; margin: 10px 2px 0; padding: 8px 9px; border: 1px solid rgb(207 157 77 / 25%); border-radius: 4px; color: #d9c293; background: rgb(86 61 26 / 12%); font-size: 8px; line-height: 1.4; }
+.assembly-unavailable-note span { color: #9faab2; }
+.assembly-scene-column { display: grid; min-width: 0; min-height: 0; grid-template-rows: 44px minmax(0,1fr) auto; padding: 0 9px 7px; background: #0e1521; }
+.assembly-scene-toolbar { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 8px; }
+.assembly-scene-toolbar > div { display: grid; min-width: 0; gap: 3px; }
+.assembly-scene-toolbar .activity-eyebrow { font-size: 7px; }
+.assembly-scene-toolbar [role="status"] { overflow: hidden; color: #9cabb8; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.assembly-scene-stage { min-width: 0; min-height: 0; background: radial-gradient(ellipse at 48% 43%, #293a49, #111a27 74%); }
+.assembly-canvas { width: 100%; height: 100%; }
+.assembly-target-label { position: absolute; z-index: 2; top: 10px; left: 50%; padding: 6px 9px; transform: translateX(-50%); border: 1px solid rgb(91 208 195 / 48%); border-radius: 4px; color: #dff8f2; background: rgb(13 35 40 / 86%); font-size: 8px; font-weight: 650; pointer-events: none; }
+.assembly-scene-footer { display: flex; min-width: 0; min-height: 22px; align-items: center; justify-content: space-between; gap: 8px; color: #7f90a0; font-size: 7px; }
+.assembly-drag-hint { color: #83d6cf; font-weight: 650; }
+.assembly-guide-panel { display: flex; flex-direction: column; padding: 14px 13px; }
+.assembly-guide-progress { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
+.assembly-guide-progress .activity-eyebrow { font-size: 8px; }
+.assembly-state-pill { padding: 4px 6px; border: 1px solid rgb(130 151 174 / 25%); border-radius: 3px; color: #9ab0bd; background: #172331; font-size: 7px; font-weight: 750; letter-spacing: .06em; }
+.assembly-guide-panel h2 { margin: 17px 0 7px; color: #eef4f6; font-size: clamp(14px,1.4vw,18px); font-weight: 630; line-height: 1.25; letter-spacing: -.02em; }
+.assembly-instruction { margin: 0; color: #aab7c2; font-size: 10px; line-height: 1.6; }
+.assembly-component-summary { display: grid; gap: 4px; margin-top: 13px; padding: 9px 10px; border: 1px solid rgb(89 126 144 / 24%); border-radius: 4px; background: rgb(27 43 56 / 54%); }
+.assembly-component-summary strong { color: #dce9ed; font-size: 9px; font-weight: 700; }
+.assembly-component-summary p { margin: 0; color: #91a3af; font-size: 8px; line-height: 1.5; }
+.assembly-alignment-card { display: grid; grid-template-columns: 25px minmax(0,1fr); align-items: center; gap: 8px; margin-top: 17px; padding: 10px; border: 1px solid rgb(89 126 144 / 24%); border-radius: 4px; background: rgb(27 43 56 / 75%); }
+.assembly-alignment-icon { display: grid; width: 25px; height: 25px; place-items: center; border-radius: 4px; color: #77d3cc; background: rgb(36 184 176 / 10%); }
+.assembly-alignment-card strong, .assembly-alignment-card small { display: block; }
+.assembly-alignment-card strong { color: #dce9ed; font-size: 8px; font-weight: 700; }
+.assembly-alignment-card small { margin-top: 4px; color: #91a3af; font-size: 7px; line-height: 1.45; }
+.assembly-feedback { min-height: 40px; margin: 13px 0; color: #89cfc9; font-size: 8px; line-height: 1.55; }
+.assembly-feedback[data-state="blocked"] { min-height: 0; padding: 8px 9px; border: 1px solid rgb(207 157 77 / 38%); border-left: 2px solid #c99a50; border-radius: 3px; color: #e0c18c; background: rgb(86 61 26 / 18%); }
+.assembly-stereo-step { position: absolute; z-index: 3; top: 10%; display: none; width: min(42%, 270px); min-height: 66px; padding: 8px 10px; border: 1px solid rgb(128 157 174 / 34%); border-radius: 5px; color: #e7eff2; background: rgb(8 14 21 / 82%); box-shadow: 0 5px 22px rgb(0 0 0 / 30%); pointer-events: none; }
+.assembly-layout.is-stereo-mode .assembly-stereo-step { display: block; }
+.assembly-stereo-step-left { left: 25%; transform: translateX(-50%); }
+.assembly-stereo-step-right { left: 75%; transform: translateX(-50%); }
+.assembly-stereo-step .activity-eyebrow { color: #8bcfc8; font-size: 8px; }
+.assembly-stereo-step h2 { margin: 5px 0 3px; font-size: 11px; line-height: 1.25; }
+.assembly-stereo-step p { margin: 0; color: #c1cdd2; font-size: 9px; line-height: 1.4; }
+.assembly-stereo-step small { display: block; margin-top: 4px; color: #d4bb84; font-size: 8px; line-height: 1.3; }
+.assembly-step-actions { display: grid; gap: 8px; margin-top: auto; }
+.assembly-primary-button { min-height: 38px; padding: 0 12px; border: 1px solid #159a96; border-radius: 4px; color: #f0ffff; background: linear-gradient(100deg, #117f83, #0e7378); font: inherit; font-size: 9px; font-weight: 700; cursor: pointer; }
+.assembly-primary-button:hover:not(:disabled) { filter: brightness(1.12); }
+.assembly-primary-button:disabled { opacity: .55; cursor: wait; }
+.assembly-navigation-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6px; }
+.assembly-navigation-actions button { min-height: 34px; padding: 0 7px; border: 1px solid #3b4d5f; border-radius: 4px; color: #bfccd4; background: #172332; font: inherit; font-size: 8px; font-weight: 650; cursor: pointer; }
+.assembly-navigation-actions button:last-child { border-color: rgb(61 167 164 / 50%); color: #d8f2ef; background: rgb(25 89 91 / 40%); }
+.assembly-navigation-actions button:disabled, .assembly-secondary-actions button:disabled, .assembly-reset-activity:disabled { opacity: .45; cursor: not-allowed; }
+.assembly-secondary-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.assembly-text-button { min-height: 29px; padding: 0 7px; border: 1px solid #344758; border-radius: 4px; color: #aebdc7; background: #141f2b; font: inherit; font-size: 8px; font-weight: 600; cursor: pointer; }
+.assembly-text-button:hover:not(:disabled) { border-color: #557985; color: #e0eeee; }
+.assembly-navigation-actions button:disabled { opacity: .45; cursor: not-allowed; }
+.assembly-text-button { min-height: 28px; justify-self: start; padding: 0 4px; border: 0; color: #92a5b2; background: transparent; font: inherit; font-size: 8px; cursor: pointer; }
+.assembly-text-button:hover { color: #dcebea; }
+.assembly-live-region { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.assembly-layout.is-stereo-mode { display: block; }
+.assembly-layout.is-stereo-mode .assembly-parts-panel, .assembly-layout.is-stereo-mode .assembly-guide-panel, .assembly-layout.is-stereo-mode .assembly-scene-toolbar, .assembly-layout.is-stereo-mode .assembly-scene-footer { display: none !important; }
+.assembly-layout.is-stereo-mode .assembly-scene-column { position: absolute; inset: 0; display: block; padding: 0; }
+.assembly-layout.is-stereo-mode .assembly-scene-stage { position: absolute; inset: 0; border: 0; border-radius: 0; background: #030405; }
+.assembly-layout.is-stereo-mode .assembly-canvas { background: #030405; }
+.assembly-layout.is-stereo-mode .assembly-target-label { display: none; }
+.assembly-layout.is-stereo-mode .viewer-stereo-shade { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.assembly-layout.is-stereo-mode .viewer-stereo-shade::before, .assembly-layout.is-stereo-mode .viewer-stereo-shade::after { position: absolute; top: 5%; bottom: 5%; width: 50%; background: radial-gradient(ellipse 80% 82% at 50% 50%, transparent 0 61%, rgb(0 0 0 / 22%) 67%, rgb(0 0 0 / 82%) 81%, #000 96%); content: ''; }
+.assembly-layout.is-stereo-mode .viewer-stereo-shade::before { left: 0; }
+.assembly-layout.is-stereo-mode .viewer-stereo-shade::after { right: 0; }
+.assembly-layout.is-stereo-mode .stereo-eye-label { position: absolute; z-index: 3; top: 5%; display: block; color: rgb(213 223 232 / 56%); font-size: 7px; font-weight: 700; letter-spacing: .12em; pointer-events: none; }
+.assembly-layout.is-stereo-mode .stereo-eye-left { left: 13%; }
+.assembly-layout.is-stereo-mode .stereo-eye-right { right: 13%; }
+.assembly-stereo-controls { position: absolute; z-index: 5; bottom: 7%; left: 50%; display: none; align-items: center; gap: 6px; width: max-content; max-width: 92%; padding: 6px; transform: translateX(-50%); border: 1px solid rgb(128 157 174 / 38%); border-radius: 7px; background: rgb(8 14 21 / 88%); box-shadow: 0 5px 22px rgb(0 0 0 / 42%); pointer-events: auto; }
+.assembly-layout.is-stereo-mode .assembly-stereo-controls { display: flex; }
+.assembly-stereo-controls button { min-width: 72px; min-height: 34px; padding: 0 10px; border: 1px solid #415364; border-radius: 4px; color: #d7e3e9; background: #172431; font: inherit; font-size: 9px; font-weight: 650; cursor: pointer; }
+.assembly-stereo-controls button:disabled { opacity: .45; cursor: not-allowed; }
+.assembly-stereo-controls .assembly-primary-button { border-color: #159a96; color: #f0ffff; background: linear-gradient(100deg, #117f83, #0e7378); }
+
+@media (max-width: 900px) and (min-width: 601px) {
+  .assembly-layout { grid-template-columns: 180px minmax(0,1fr) 245px; }
+  .assembly-guide-panel { padding: 11px 10px; }
+}
+
+@media (max-height: 540px) and (max-width: 1000px) {
+  .activity-topbar:has(.assembly-step-indicator) { gap: 6px; padding-inline: 7px; }
+  .activity-topbar:has(.assembly-step-indicator) .activity-title-block { margin-right: auto; }
+  .activity-topbar:has(.assembly-step-indicator) .activity-title-block .activity-eyebrow { display: none; }
+  .activity-topbar:has(.assembly-step-indicator) .activity-title-block h1 { font-size: 11px; }
+  .activity-topbar:has(.assembly-step-indicator) .activity-step-indicator { font-size: 7px; }
+  .activity-topbar:has(.assembly-step-indicator) .assembly-reset-activity { min-height: 29px; padding-inline: 7px; font-size: 7px; }
+  .activity-topbar:has(.assembly-step-indicator) .activity-mode-switch button { min-height: 25px; padding-inline: 6px; font-size: 7px; }
+  .activity-topbar:has(.assembly-step-indicator) .activity-fullscreen-button { width: 29px; min-height: 29px; }
+  .assembly-layout { display: block; }
+  .assembly-parts-panel { display: none; }
+  .assembly-scene-column { position: absolute; inset: 0; display: block; padding: 0; }
+  .assembly-scene-toolbar, .assembly-scene-footer { display: none; }
+  .assembly-scene-stage { position: absolute; inset: 0; border: 0; border-radius: 0; }
+  .assembly-guide-panel { position: absolute; z-index: 4; right: 7px; bottom: 7px; left: 7px; display: grid; max-height: 43%; grid-template-columns: minmax(0,1fr) minmax(150px, 32%); grid-template-rows: auto 1fr; gap: 5px 9px; overflow: auto; padding: 7px 9px; border: 1px solid rgb(119 151 172 / 29%); border-radius: 5px; background: rgb(12 20 30 / 92%); box-shadow: 0 8px 26px rgb(0 0 0 / 34%); }
+  .assembly-guide-progress { grid-column: 1 / -1; }
+  .assembly-guide-progress .activity-eyebrow { font-size: 7px; }
+  .assembly-guide-panel h2 { align-self: end; margin: 0; font-size: 11px; }
+  .assembly-instruction { align-self: start; grid-column: 1; font-size: 9px; line-height: 1.4; }
+  .assembly-component-summary { grid-column: 1; gap: 2px; margin-top: 0; padding: 5px 7px; }
+  .assembly-component-summary strong { font-size: 9px; }
+  .assembly-component-summary p { font-size: 8px; }
+  .assembly-alignment-card { display: none; }
+  .assembly-feedback { grid-column: 1; min-height: 0; margin: 0; font-size: 8px; }
+  .assembly-step-actions { grid-column: 2; grid-row: 2 / span 3; align-self: center; gap: 4px; margin: 0; }
+  .assembly-primary-button { min-height: 33px; padding-inline: 5px; font-size: 8px; }
+  .assembly-navigation-actions { gap: 4px; }
+  .assembly-navigation-actions button { min-height: 30px; padding-inline: 4px; font-size: 8px; }
+  .assembly-text-button { min-height: 23px; font-size: 8px; }
+  .assembly-stereo-step { top: 12%; width: 44%; min-height: 64px; padding: 6px 7px; }
+  .assembly-stereo-step .activity-eyebrow, .assembly-stereo-step small { font-size: 8px; }
+  .assembly-stereo-step h2 { font-size: 10px; }
+  .assembly-stereo-step p { font-size: 8px; }
+  .assembly-layout.is-stereo-mode .assembly-guide-panel { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assembly-primary-button, .assembly-step-list li { transition: none; }
+}

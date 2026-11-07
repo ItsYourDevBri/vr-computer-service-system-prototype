@@ -1,18 +1,26 @@
 import * as THREE from 'three'
 import { createModelLoader } from './model-loader.js'
 
-function disposeObjectResources(root) {
+function disposeObjectResources(root, { disposeShared = false, ownedMaterials = [] } = {}) {
   const geometries = new Set()
   const materials = new Set()
+  const textures = new Set()
+  const owned = new Set(ownedMaterials)
   root.traverse((object) => {
     if (!object.isMesh) return
-    if (object.geometry) geometries.add(object.geometry)
+    if (disposeShared && object.geometry) geometries.add(object.geometry)
     for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
-      if (material) materials.add(material)
+      if (material && (disposeShared || owned.has(material))) materials.add(material)
+      if (disposeShared && material) {
+        for (const value of Object.values(material)) {
+          if (value?.isTexture) textures.add(value)
+        }
+      }
     }
   })
   for (const geometry of geometries) geometry.dispose()
   for (const material of materials) material.dispose()
+  for (const texture of textures) texture.dispose()
 }
 
 function applyTemporaryFanMaterialCorrection(scene) {
@@ -41,7 +49,10 @@ function applyTemporaryFanMaterialCorrection(scene) {
     })
     object.material = Array.isArray(object.material) ? corrected : corrected[0]
   })
-  return [...copies.keys()].map((material) => material.name)
+  return {
+    names: [...copies.keys()].map((material) => material.name),
+    ownedMaterials: [...copies.values()],
+  }
 }
 
 export class HardwareAssetManager {
@@ -78,7 +89,9 @@ export class HardwareAssetManager {
       for (const object of excluded) object.parent?.remove(object)
     }
     scene.userData.filteredNodeCount = filteredNodeCount
-    scene.userData.correctedMaterialNames = correctTemporaryFans ? applyTemporaryFanMaterialCorrection(scene) : []
+    const materialCorrection = correctTemporaryFans ? applyTemporaryFanMaterialCorrection(scene) : { names: [], ownedMaterials: [] }
+    scene.userData.correctedMaterialNames = materialCorrection.names
+    scene.userData.ownedMaterials = materialCorrection.ownedMaterials
 
     entry.refs += 1
     this.activeScenes.set(scene, entry)
@@ -90,10 +103,13 @@ export class HardwareAssetManager {
     const entry = this.activeScenes.get(scene)
     this.activeScenes.delete(scene)
     scene.parent?.remove(scene)
-    disposeObjectResources(scene)
     if (entry) {
       entry.refs = Math.max(0, entry.refs - 1)
-      if (entry.refs === 0 && this.cache.get(entry.url) === entry) this.cache.delete(entry.url)
+      const disposeShared = entry.refs === 0
+      disposeObjectResources(scene, { disposeShared, ownedMaterials: scene.userData.ownedMaterials || [] })
+      if (disposeShared && this.cache.get(entry.url) === entry) this.cache.delete(entry.url)
+    } else {
+      disposeObjectResources(scene, { ownedMaterials: scene.userData.ownedMaterials || [] })
     }
   }
 

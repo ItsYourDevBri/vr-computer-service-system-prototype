@@ -34,7 +34,10 @@ function render() {
 
   if (learningActivityPaths.includes(location.pathname)) {
     mountTemplate(app, renderActivityShell(location.pathname))
-    import('../activities/activity-controller.js').then(({ mountActivityWorkspace }) => {
+    const controllerRequest = ['/student/assembly', '/student/disassembly'].includes(location.pathname)
+      ? import('../activities/assembly-controller.js')
+      : import('../activities/activity-controller.js')
+    controllerRequest.then(({ mountActivityWorkspace }) => {
       if (currentRenderToken !== renderToken || currentLocation().pathname !== location.pathname) return
       activityControllerCleanup = mountActivityWorkspace({ root: app, path: location.pathname })
     }).catch((error) => {

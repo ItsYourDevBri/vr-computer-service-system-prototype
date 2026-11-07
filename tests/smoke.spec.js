@@ -220,7 +220,8 @@ test('student dashboard opens Hardware Exploration and shared activity shells', 
   await page.locator('.activity-topbar').getByRole('link', { name: 'Back to Student Dashboard' }).click()
   await page.getByRole('link', { name: 'Start assembly' }).click()
   await expect(page.getByRole('heading', { name: 'Guided Assembly', exact: true })).toBeVisible()
-  await expect(page.getByRole('status').filter({ hasText: 'not interactive yet' })).toBeVisible()
+  await expect(page.locator('[data-learning-activity]')).toHaveAttribute('data-assembly-load-state', 'loaded', { timeout: 30_000 })
+  await expect(page.locator('[data-assembly-canvas]')).toHaveAttribute('data-case-model-loaded', 'true')
   await page.locator('.activity-topbar').getByRole('link', { name: 'Back to Student Dashboard' }).click()
   await page.getByRole('link', { name: 'Start disassembly' }).click()
   await expect(page.getByRole('heading', { name: 'Guided Disassembly', exact: true })).toBeVisible()
@@ -553,6 +554,7 @@ test('three learning activities share the smartphone portrait gate and landscape
     ['/student/assembly', 'Guided Assembly'],
     ['/student/disassembly', 'Guided Disassembly'],
   ]) {
+    const requestsBeforeActivity = glbRequests
     await page.setViewportSize({ width: 320, height: 568 })
     await page.goto(path)
     for (const [width, height] of [[320, 568], [375, 667], [390, 844], [430, 932]]) {
@@ -577,7 +579,12 @@ test('three learning activities share the smartphone portrait gate and landscape
         await expect(page.locator('[data-hardware-canvas]')).not.toHaveAttribute('data-renderer-active', 'true')
         await expect(page.locator('html')).not.toHaveAttribute('data-three-revision', /.+/)
         await expect(page.locator('[data-learning-activity]')).toHaveAttribute('data-orientation-state', 'portrait-prompt')
-        expect(glbRequests).toBe(0)
+        expect(glbRequests - requestsBeforeActivity).toBe(0)
+      } else {
+        await expect(page.locator('[data-guided-canvas]')).toBeHidden()
+        await expect(page.locator('html')).not.toHaveAttribute('data-three-revision', /.+/)
+        await expect(page.locator('[data-learning-activity]')).toHaveAttribute('data-orientation-state', 'portrait-prompt')
+        expect(glbRequests - requestsBeforeActivity).toBe(0)
       }
     }
 
@@ -586,11 +593,20 @@ test('three learning activities share the smartphone portrait gate and landscape
     await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
     if (path === '/student/hardware') {
       await expect(page.locator('[data-learning-activity]')).toHaveAttribute('data-model-load-state', 'loaded', { timeout: 15_000 })
-      expect(glbRequests).toBe(1)
+      expect(glbRequests - requestsBeforeActivity).toBe(1)
+    } else if (path === '/student/assembly') {
+      await expect(page.locator('[data-learning-activity]')).toHaveAttribute('data-assembly-load-state', 'loaded', { timeout: 30_000 })
+      await expect(page.locator('[data-assembly-canvas]')).toHaveAttribute('data-case-model-loaded', 'true')
+      await expect(page.locator('[data-assembly-canvas]')).toHaveAttribute('data-motherboard-model-loaded', 'true')
+      await expect(page.locator('.activity-topbar').getByRole('button', { name: 'Normal 3D' })).toBeEnabled()
+      expect(glbRequests - requestsBeforeActivity).toBe(2)
     } else {
-      await expect(page.getByRole('status').filter({ hasText: 'not interactive yet' })).toBeVisible()
-      await expect(page.locator('.activity-topbar').getByRole('button', { name: 'Normal 3D' })).toBeDisabled()
+      await expect(page.locator('[data-learning-activity]')).toHaveAttribute('data-assembly-load-state', 'loaded', { timeout: 30_000 })
+      await expect(page.locator('[data-disassembly-canvas]')).toHaveAttribute('data-case-model-loaded', 'true')
+      await expect(page.locator('[data-disassembly-canvas]')).toHaveAttribute('data-motherboard-visible', 'false')
+      await expect(page.locator('.activity-topbar').getByRole('button', { name: 'Normal 3D' })).toBeEnabled()
       await expect(page.locator('[data-hardware-canvas]')).toHaveCount(0)
+      expect(glbRequests - requestsBeforeActivity).toBe(2)
     }
   }
 })
