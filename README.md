@@ -9,7 +9,7 @@ The approved research scope, role hierarchy, exclusions, and implementation boun
 - Student, CSS Instructor, and Principal role-based interface flows.
 - Hardware Exploration with all 11 Blender GLBs, orbit, zoom, reset, and per-component educational details.
 - Stereoscopic VR-style presentation with confirmed Computer Case part selection. Phone learning workspaces require landscape orientation and pause in portrait.
-- Reversible Assembly and Disassembly controls. The glass-panel transition is verified; motherboard movement remains an explicitly labeled fit demonstration and is not recorded as an installation.
+- Reversible Assembly and Disassembly controls with validated case, motherboard, CPU, paired RAM, and CPU cooler installation/removal transitions. The corrected exports validate the ATX tray, nine mounting-hole/standoff correspondences, and authored component attachment transforms at runtime.
 - Application-controlled technician hands appear during guided stereo animations. They are procedural visuals, not tracked hands.
 - Component 10, the optical drive, remains a standalone learning asset.
 
@@ -23,7 +23,7 @@ The approved research scope, role hierarchy, exclusions, and implementation boun
 
 Login, role selection, invitations, account activation, recovery, classes, assessments, and progress use local illustrative data and browser-session UI state. They do not authenticate users, send email, or persist information to a server.
 
-The motherboard's saved Blender geometry does not establish an installable pose: the tray is solid, the stand-offs are detached from it and offset from the board, the rear I/O is not aligned to a real opening, and a tested mirrored-placement candidate conflicted with other components. Assembly therefore stops at an exploded fit demonstration. Disassembly only demonstrates the verified glass-panel removal; a full assembled-PC starting state and further removals remain unavailable pending asset correction and validation.
+The original Blender master is preserved. CSS-3D-04 adds versioned corrected case/motherboard exports, while CSS-3D-05 integrates the authored CPU, paired RAM, and cooler GLBs. See the [CSS-3D-04 geometry report](docs/css-3d-04-geometry-correction-report.md) and [CSS-3D-05 component report](docs/css-3d-05-components-report.md).
 
 The stereo view is fixed and stationary. There is no WebXR, head tracking, motion sensing, controller input, physical headset validation, production authentication, database, email delivery, or multiplayer. See the traceability checklist and [system stabilization report](docs/system-stabilization-report.md) for feature-level status.
 
@@ -45,8 +45,17 @@ React, JSX/TSX, TypeScript, and Tailwind CSS are not part of the application arc
 - Chromium browser binaries for end-to-end tests
 
 ```sh
+# Clone the repository and enter it
+git clone git@github.com:itsmebriii/vr-css-prototype.git
+cd vr-css-prototype
+
+# Install the locked dependency tree
 npm ci
+
+# Install the browser used by Playwright (one time per machine)
 npx playwright install chromium
+
+# Start the development server
 npm run dev
 ```
 
@@ -63,6 +72,15 @@ PLAYWRIGHT_PREVIEW=1 npm run test:e2e
 ```
 
 The preview-mode run expects a current production build. Browser tests cover public and role routes, navigation, responsive layouts, GLB loading and controls, stereo presentation, landscape gating, case-part picking, and guided transitions. Current results and limitations are in the [system stabilization report](docs/system-stabilization-report.md).
+
+For an existing checkout, update it with an explicit pull strategy when local and remote history have diverged:
+
+```sh
+git fetch origin
+git pull --rebase origin main
+```
+
+Use `git pull --no-rebase origin main` if the project requires a merge commit instead. The repository remote is `git@github.com:itsmebriii/vr-css-prototype.git`; verify it with `git remote -v`.
 
 ## Repository layout
 

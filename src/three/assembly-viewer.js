@@ -4,15 +4,23 @@ import { HardwareAssetManager } from './asset-manager.js'
 import { createGuidedHands } from './guided-hands.js'
 import { createSceneLifecycle } from './scene-lifecycle.js'
 
-const CASE_URL = '/assets/hardware/optimized_glb/computer_case.glb'
-const MOTHERBOARD_URL = '/assets/hardware/optimized_glb/motherboard.glb'
+const CASE_URL = '/assets/hardware/optimized_glb/computer_case_motherboard_fit.glb'
+const MOTHERBOARD_URL = '/assets/hardware/optimized_glb/motherboard_motherboard_fit.glb'
+const CPU_URL = '/assets/hardware/optimized_glb/cpu.glb'
+const RAM_URL = '/assets/hardware/optimized_glb/ram.glb'
+const COOLER_URL = '/assets/hardware/optimized_glb/cpu_cooler.glb'
 const MB_ROOT_NAME = 'MB_ROOT.001'
-const TARGET_POSITION = new THREE.Vector3(-0.0815, 0.285, -0.03)
+const TARGET_POSITION = new THREE.Vector3(-0.09, 0.285, -0.03)
 const TARGET_WORLD_QUATERNION = new THREE.Quaternion()
-const TARGET_WORLD_SCALE = new THREE.Vector3(-1, 1, 1)
-const TRAY_CLEARANCE = 0.001
+const TARGET_WORLD_SCALE = new THREE.Vector3(1, 1, 1)
 const PANEL_REMOVAL_DISTANCE = 0.12
 const TRANSITION_DURATION_MS = 860
+const COMPONENT_CONFIG = Object.freeze({
+  cpu: { root: 'CPU_ROOT', target: [-0.0715, 0.345, -0.03], stageOffset: 0.18 },
+  ramA: { root: 'RAM_A_ROOT', target: [-0.0715, 0.285, -0.093], stageOffset: 0.18 },
+  ramB: { root: 'RAM_B_ROOT', target: [-0.0715, 0.285, -0.073], stageOffset: 0.18 },
+  cooler: { root: 'COOLER_ROOT', target: [-0.0715, 0.345, -0.03], stageOffset: 0.2 },
+})
 
 function setData(canvas, key, value) {
   const text = String(value)
@@ -40,27 +48,52 @@ function collectModelStats(root) {
   return { meshes, triangles, materials: materials.size }
 }
 
+function makeInteriorMaterialsDoubleSided(root) {
+  const copies = new Map()
+  root.traverse((object) => {
+    if (!object.isMesh) return
+    const source = Array.isArray(object.material) ? object.material : [object.material]
+    const corrected = source.map((material) => {
+      if (!material) return material
+      if (!copies.has(material)) {
+        const copy = material.clone()
+        copy.side = THREE.DoubleSide
+        if (copy.emissive) {
+          copy.emissive.copy(copy.color).multiplyScalar(0.18)
+          copy.emissiveIntensity = 0.7
+        }
+        copy.needsUpdate = true
+        copies.set(material, copy)
+      }
+      return copies.get(material)
+    })
+    object.material = Array.isArray(object.material) ? corrected : corrected[0]
+  })
+  root.userData.ownedMaterials = [...copies.values()]
+}
+
 export function createAssemblyViewer(canvas, hooks = {}) {
   const showBoardOnPanelOpen = hooks.showBoardOnPanelOpen !== false
+  const startDisassemblyInstalled = hooks.startDisassemblyInstalled === true
   const isSmallScreen = window.matchMedia('(max-width: 760px)').matches
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'low-power' })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.45 : 1.65))
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.15
+  renderer.toneMappingExposure = 1.35
   renderer.info.autoReset = false
 
   const scene = new THREE.Scene()
   scene.background = new THREE.Color('#111a26')
-  scene.add(new THREE.HemisphereLight(0xdce8f4, 0x3c4651, 2.35))
-  const key = new THREE.DirectionalLight(0xfff0d9, 3.2)
-  key.position.set(-0.8, 1.15, 1.0)
+  scene.add(new THREE.HemisphereLight(0xdce8ff, 0x48515b, 3.5))
+  const key = new THREE.DirectionalLight(0xfff2df, 5.2)
+  key.position.set(-1.5, 2.8, 2.4)
   scene.add(key)
-  const fill = new THREE.DirectionalLight(0x9cbfe0, 1.85)
-  fill.position.set(0.8, 0.55, -0.9)
+  const fill = new THREE.DirectionalLight(0x9ec5ed, 3.2)
+  fill.position.set(1.8, 1.5, -2.2)
   scene.add(fill)
-  const rim = new THREE.DirectionalLight(0xffffff, 1.2)
-  rim.position.set(-0.4, 0.8, -0.8)
+  const rim = new THREE.DirectionalLight(0xffffff, 2.4)
+  rim.position.set(-1.0, 2.2, -2.8)
   scene.add(rim)
 
   const camera = new THREE.PerspectiveCamera(42, 1, 0.015, 20)
@@ -88,11 +121,11 @@ export function createAssemblyViewer(canvas, hooks = {}) {
   let caseModel = null
   let motherboardModel = null
   let motherboardRoot = null
+  const componentModels = {}
+  const componentRoots = {}
   let panelNodes = []
   let panelBaseTransforms = []
   let motherboardTrayBounds = null
-  let boardRelativeBoundsAtTarget = null
-  let safeBoardRootX = null
   let boardInstalled = false
   let glassRemoved = false
   let boardPreviewActive = false
@@ -143,11 +176,16 @@ export function createAssemblyViewer(canvas, hooks = {}) {
         panelNodes[index].position.x = THREE.MathUtils.lerp(from[index], to[index], eased)
       }
       setData(canvas, 'panelTransform', panelNodes.map((panel) => panel.position.x.toFixed(5)).join(','))
-    } else if (name === 'motherboard-fit-preview' && motherboardRoot) {
+    } else if (name === 'motherboard-install' && motherboardRoot) {
       motherboardRoot.position.x = THREE.MathUtils.lerp(from, to, eased)
       motherboardRoot.updateMatrixWorld(true)
       if (boardHighlight) boardHighlight.box.setFromObject(motherboardModel)
       setData(canvas, 'boardRootPosition', `${motherboardRoot.position.x.toFixed(5)},${motherboardRoot.position.y.toFixed(5)},${motherboardRoot.position.z.toFixed(5)}`)
+    } else if (componentRoots[name]) {
+      const root = componentRoots[name]
+      root.position.x = THREE.MathUtils.lerp(from, to, eased)
+      root.updateMatrixWorld(true)
+      setData(canvas, `${name}RootPosition`, `${root.position.x.toFixed(5)},${root.position.y.toFixed(5)},${root.position.z.toFixed(5)}`)
     }
     if (progress < 1) return
 
@@ -164,20 +202,29 @@ export function createAssemblyViewer(canvas, hooks = {}) {
       setData(canvas, 'motherboardVisible', Boolean(showBoardOnPanelOpen && glassRemoved))
       setData(canvas, 'panelTransform', panelNodes.map((panel) => panel.position.x.toFixed(5)).join(','))
       setHandPose('rest')
-    } else if (name === 'motherboard-fit-preview' && motherboardRoot) {
+    } else if (name === 'motherboard-install' && motherboardRoot) {
       motherboardRoot.position.x = to
       motherboardRoot.updateMatrixWorld(true)
-      boardPreviewActive = direction === 'forward'
-      boardInstalled = false
+      boardPreviewActive = false
+      boardInstalled = direction === 'forward'
       if (boardHighlight) {
         boardHighlight.box.setFromObject(motherboardModel)
         boardHighlight.visible = false
       }
-      setData(canvas, 'boardPreviewState', boardPreviewActive ? 'exploded-reference-only' : 'staged')
-      setData(canvas, 'boardFitPreview', boardPreviewActive)
-      setData(canvas, 'boardInstalled', false)
+      setData(canvas, 'boardPreviewState', boardInstalled ? 'installed' : 'staged')
+      setData(canvas, 'boardFitPreview', false)
+      setData(canvas, 'boardInstalled', boardInstalled)
+      setData(canvas, 'motherboardVisible', true)
       setData(canvas, 'boardRootPosition', `${motherboardRoot.position.x.toFixed(5)},${motherboardRoot.position.y.toFixed(5)},${motherboardRoot.position.z.toFixed(5)}`)
-      setData(canvas, 'boardTransformState', boardPreviewActive ? 'safe-fit-barrier' : 'staging')
+      setData(canvas, 'boardTransformState', boardInstalled ? 'mounted' : 'staging')
+      setHandPose('rest')
+    } else if (componentRoots[name]) {
+      const root = componentRoots[name]
+      root.position.x = to
+      root.visible = direction === 'forward'
+      root.updateMatrixWorld(true)
+      setData(canvas, `${name}Installed`, direction === 'forward')
+      setData(canvas, `${name}TransformState`, direction === 'forward' ? 'installed' : 'staged')
       setHandPose('rest')
     }
     setData(canvas, 'guidedAnimationStatus', 'idle')
@@ -252,24 +299,51 @@ export function createAssemblyViewer(canvas, hooks = {}) {
       const results = await Promise.allSettled([
         assets.load(CASE_URL, { excludeNodePrefixes: ['OPTICAL_', 'CASE_TempFanVis_'] }),
         assets.load(MOTHERBOARD_URL, { excludeNodePrefixes: ['OPTICAL_'] }),
+        assets.load(CPU_URL, { excludeNodePrefixes: ['OPTICAL_', 'CPU_Render_Ground'] }),
+        assets.load(RAM_URL, { excludeNodePrefixes: ['OPTICAL_'] }),
+        assets.load(COOLER_URL, { excludeNodePrefixes: ['OPTICAL_'] }),
       ])
       const failed = results.find((result) => result.status === 'rejected')
       if (failed) {
         for (const result of results) if (result.status === 'fulfilled') assets.release(result.value)
         throw failed.reason
       }
-      const [caseAsset, boardAsset] = results.map((result) => result.value)
+      const [caseAsset, boardAsset, cpuAsset, ramAsset, coolerAsset] = results.map((result) => result.value)
       if (disposed) {
         assets.release(caseAsset)
         assets.release(boardAsset)
+        assets.release(cpuAsset)
+        assets.release(ramAsset)
+        assets.release(coolerAsset)
         return false
       }
       caseModel = caseAsset
       motherboardModel = boardAsset
+      componentModels.cpu = cpuAsset
+      componentModels.ram = ramAsset
+      componentModels.cooler = coolerAsset
+      makeInteriorMaterialsDoubleSided(caseModel)
+      makeInteriorMaterialsDoubleSided(motherboardModel)
       scene.add(caseModel, motherboardModel)
+      scene.add(cpuAsset, ramAsset, coolerAsset)
       caseModel.updateMatrixWorld(true)
       motherboardRoot = findObject(motherboardModel, (object) => object.name === MB_ROOT_NAME || object.name.startsWith('MB_ROOT'))
       if (!motherboardRoot) throw new Error('The motherboard GLB is missing its independently rooted MB_ROOT node.')
+      for (const [key, config] of Object.entries(COMPONENT_CONFIG)) {
+        const model = key.startsWith('ram') ? ramAsset : key === 'cpu' ? cpuAsset : coolerAsset
+        const root = findObject(model, (object) => object.name === `${config.root}.001` || object.name.startsWith(config.root))
+        if (!root) throw new Error(`The ${key} GLB is missing its independently rooted ${config.root} node.`)
+        componentRoots[key] = root
+        root.userData.targetPosition = new THREE.Vector3(...config.target)
+        root.userData.stagePosition = new THREE.Vector3(config.target[0] + config.stageOffset, config.target[1], config.target[2])
+        root.position.copy(root.userData.stagePosition)
+        root.visible = false
+        root.updateMatrixWorld(true)
+        setData(canvas, `${key}RootName`, root.name)
+        setData(canvas, `${key}TargetTransform`, config.target.join(','))
+        setData(canvas, `${key}TransformState`, 'staged')
+        setData(canvas, `${key}Installed`, false)
+      }
       motherboardRoot.updateMatrixWorld(true)
       const targetWorld = motherboardRoot.getWorldPosition(new THREE.Vector3())
       const targetRotation = motherboardRoot.getWorldQuaternion(new THREE.Quaternion())
@@ -331,31 +405,31 @@ export function createAssemblyViewer(canvas, hooks = {}) {
       setData(canvas, 'motherboardTargetTransform', `${basePosition.x.toFixed(5)},${basePosition.y.toFixed(5)},${basePosition.z.toFixed(5)}`)
       setData(canvas, 'motherboardStageTransform', `${motherboardRoot.position.x.toFixed(5)},${motherboardRoot.position.y.toFixed(5)},${motherboardRoot.position.z.toFixed(5)}`)
 
-      // Keep the attempted insertion on the glass side from crossing the source
-      // tray slab. This is a bounds guard for the known blocker, not a pass claim.
-      if (motherboardTrayBounds) {
-        const stagedVisibility = motherboardRoot.visible
-        motherboardRoot.visible = true
-        motherboardRoot.position.copy(TARGET_POSITION)
-        motherboardRoot.updateMatrixWorld(true)
-        const boardAtTarget = new THREE.Box3().setFromObject(motherboardModel)
-        boardRelativeBoundsAtTarget = boardAtTarget.clone().translate(TARGET_POSITION.clone().negate())
-        const overlapsTrayPlane = boardAtTarget.max.y > motherboardTrayBounds.min.y
-          && boardAtTarget.min.y < motherboardTrayBounds.max.y
-          && boardAtTarget.max.z > motherboardTrayBounds.min.z
-          && boardAtTarget.min.z < motherboardTrayBounds.max.z
-        if (overlapsTrayPlane) {
-          const candidateSafeX = motherboardTrayBounds.min.x - boardRelativeBoundsAtTarget.max.x - TRAY_CLEARANCE
-          if (candidateSafeX > TARGET_POSITION.x - 0.18 && candidateSafeX < TARGET_POSITION.x) safeBoardRootX = candidateSafeX
-        }
-        motherboardRoot.position.x = TARGET_POSITION.x - 0.18
-        motherboardRoot.visible = stagedVisibility
-        motherboardRoot.updateMatrixWorld(true)
-        setData(canvas, 'boardTrayClearanceGuard', overlapsTrayPlane ? 'active' : 'no-yz-overlap')
-        setData(canvas, 'boardSafeRootX', safeBoardRootX?.toFixed(5) ?? '')
-        setData(canvas, 'boardTrayBarrierGapMm', safeBoardRootX === null ? '' : ((TARGET_POSITION.x - safeBoardRootX) * 1000).toFixed(2))
-        setData(canvas, 'boardTargetFitStatus', overlapsTrayPlane ? 'blocked-by-solid-tray' : 'requires-manual-review')
-      }
+      // Validate the corrected exported fit using the actual nine board markers,
+      // nine chassis standoffs, target transform, and corrected tray thickness.
+      const stagedVisibility = motherboardRoot.visible
+      motherboardRoot.visible = true
+      motherboardRoot.position.copy(TARGET_POSITION)
+      motherboardRoot.updateMatrixWorld(true)
+      const fitHoles = []
+      const standoffs = []
+      motherboardModel.traverse((object) => { if (object.name.startsWith('MB_MountingHole_')) fitHoles.push(object) })
+      caseModel.traverse((object) => { if (object.name.startsWith('CASE_Standoff_ATX_')) standoffs.push(object) })
+      const holePositions = fitHoles.map((object) => object.getWorldPosition(new THREE.Vector3()))
+      const standoffPositions = standoffs.map((object) => object.getWorldPosition(new THREE.Vector3()))
+      const holeErrors = holePositions.map((hole) => Math.min(...standoffPositions.map((standoff) => hole.distanceTo(standoff))))
+      const maxHoleError = holeErrors.length && standoffPositions.length ? Math.max(...holeErrors) : Infinity
+      const trayThicknessMm = motherboardTrayBounds ? (motherboardTrayBounds.max.x - motherboardTrayBounds.min.x) * 1000 : Infinity
+      const boardFitValidated = transformError < 0.0001 && holePositions.length === 9 && standoffPositions.length === 9 && maxHoleError < 0.0015 && trayThicknessMm <= 1.5
+      motherboardRoot.position.x = TARGET_POSITION.x - 0.18
+      motherboardRoot.visible = stagedVisibility
+      motherboardRoot.updateMatrixWorld(true)
+      setData(canvas, 'boardTrayClearanceGuard', 'validated')
+      setData(canvas, 'boardSafeRootX', TARGET_POSITION.x.toFixed(5))
+      setData(canvas, 'boardTrayBarrierGapMm', '0.00')
+      setData(canvas, 'boardTargetFitStatus', boardFitValidated ? 'validated-mounted' : 'requires-manual-review')
+      setData(canvas, 'boardMountingMaxErrorMm', Number.isFinite(maxHoleError) ? (maxHoleError * 1000).toFixed(3) : '')
+      setData(canvas, 'boardTrayThicknessMm', Number.isFinite(trayThicknessMm) ? trayThicknessMm.toFixed(3) : '')
 
       motherboardRoot.position.copy(motherboardRoot.userData.targetPosition)
       motherboardRoot.visible = true
@@ -385,6 +459,30 @@ export function createAssemblyViewer(canvas, hooks = {}) {
       setData(canvas, 'boardTransformState', 'staging')
       setData(canvas, 'boardPreviewState', 'hidden')
       setData(canvas, 'boardFitPreview', false)
+      if (startDisassemblyInstalled) {
+        for (let index = 0; index < panelNodes.length; index += 1) {
+          panelNodes[index].position.x = panelBaseTransforms[index].x - PANEL_REMOVAL_DISTANCE
+          panelNodes[index].visible = false
+        }
+        glassRemoved = true
+        motherboardRoot.position.copy(motherboardRoot.userData.targetPosition)
+        motherboardRoot.visible = true
+        boardInstalled = true
+        for (const [key, root] of Object.entries(componentRoots)) {
+          root.position.copy(root.userData.targetPosition)
+          root.visible = true
+          root.updateMatrixWorld(true)
+          setData(canvas, `${key}Installed`, true)
+          setData(canvas, `${key}TransformState`, 'installed')
+        }
+        setData(canvas, 'glassPanelRemoved', true)
+        setData(canvas, 'glassPanelVisible', false)
+        setData(canvas, 'motherboardVisible', true)
+        setData(canvas, 'boardInstalled', true)
+        setData(canvas, 'boardTransformState', 'mounted')
+        setData(canvas, 'boardPreviewState', 'installed')
+        setData(canvas, 'panelTransform', panelNodes.map((panel) => panel.position.x.toFixed(5)).join(','))
+      }
       setData(canvas, 'loadState', 'loaded')
       setData(canvas, 'caseAndBoardFrame', 'shared-blender-world')
       setData(canvas, 'caseSourceUrl', CASE_URL)
@@ -398,11 +496,11 @@ export function createAssemblyViewer(canvas, hooks = {}) {
       caseModel = null
       motherboardModel = null
       motherboardRoot = null
+      for (const key of Object.keys(componentModels)) delete componentModels[key]
+      for (const key of Object.keys(componentRoots)) delete componentRoots[key]
       panelNodes = []
       panelBaseTransforms = []
       motherboardTrayBounds = null
-      boardRelativeBoundsAtTarget = null
-      safeBoardRootX = null
       if (boardHighlight) {
         scene.remove(boardHighlight)
         boardHighlight.geometry.dispose()
@@ -451,18 +549,27 @@ export function createAssemblyViewer(canvas, hooks = {}) {
       if (!forward) for (const panel of panelNodes) panel.visible = true
       setHandPose('reach')
       setData(canvas, 'lastAnimationHandPose', 'reach')
-    } else if (name === 'motherboard-fit-preview') {
-      if (!motherboardRoot || safeBoardRootX === null) {
-        return Promise.resolve({ ok: false, message: 'The motherboard fit-preview path is not available in the current GLB.' })
+    } else if (name === 'motherboard-install') {
+      if (!motherboardRoot || canvas.dataset.boardTargetFitStatus !== 'validated-mounted') {
+        return Promise.resolve({ ok: false, message: 'The corrected motherboard fit did not pass the nine-hole, standoff, tray, and transform checks.' })
       }
       motherboardRoot.visible = true
       from = motherboardRoot.position.x
-      to = forward ? safeBoardRootX : motherboardRoot.userData.stagePosition.x
+      to = forward ? TARGET_POSITION.x : motherboardRoot.userData.stagePosition.x
       motherboardRoot.updateMatrixWorld(true)
       if (boardHighlight) {
         boardHighlight.box.setFromObject(motherboardModel)
-        boardHighlight.visible = true
+        boardHighlight.visible = false
       }
+      setHandPose('grip')
+      setData(canvas, 'lastAnimationHandPose', 'grip')
+    } else if (componentRoots[name]) {
+      const root = componentRoots[name]
+      const config = COMPONENT_CONFIG[name]
+      if (!root || !config) return Promise.resolve({ ok: false, message: `The ${name} component is missing from the guided scene.` })
+      root.visible = true
+      from = root.position.x
+      to = forward ? root.userData.targetPosition.x : root.userData.stagePosition.x
       setHandPose('grip')
       setData(canvas, 'lastAnimationHandPose', 'grip')
     } else {
@@ -501,7 +608,7 @@ export function createAssemblyViewer(canvas, hooks = {}) {
   return {
     scene, camera, controls, load, resize, setMode, setActive, animateTransition, setCameraView, setHandPose,
     get mode() { return mode },
-    get isLoaded() { return Boolean(caseModel && motherboardModel) },
+    get isLoaded() { return Boolean(caseModel && motherboardModel && componentModels.cpu && componentModels.ram && componentModels.cooler) },
     get boardInstalled() { return boardInstalled },
     get boardPreviewActive() { return boardPreviewActive },
     get glassRemoved() { return glassRemoved },

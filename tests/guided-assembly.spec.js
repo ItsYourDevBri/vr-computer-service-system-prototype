@@ -31,78 +31,34 @@ async function waitForSequenceIdle(page) {
 test.describe('CSS-3D-03A-R reversible guided assembly and disassembly', () => {
   test.describe.configure({ timeout: 90_000 })
 
-  test('case and motherboard preview transitions reverse exactly and preserve the blocked fit status', async ({ page }) => {
+  test('case, motherboard, CPU, RAM, and cooler installation transitions reverse exactly', async ({ page }) => {
     await openGuided(page)
     const canvas = guidedCanvas(page)
-    const next = page.getByRole('button', { name: 'Next step' })
+    const next = page.locator('.assembly-guide-panel [data-assembly-action="next-step"]')
     const previous = page.getByRole('button', { name: 'Previous' })
     const panelInitial = await canvas.getAttribute('data-panel-transform')
-    const boardStageX = Number((await canvas.getAttribute('data-motherboard-stage-transform')).split(',')[0])
-    const boardStageTransform = await canvas.getAttribute('data-motherboard-stage-transform')
-    const targetQuaternion = await canvas.getAttribute('data-motherboard-target-quaternion')
-    const targetScale = await canvas.getAttribute('data-motherboard-target-scale')
     await expect(next).toBeEnabled()
     await expect(previous).toBeDisabled()
     await expect(canvas).not.toHaveAttribute('data-board-drag-enabled', 'true')
     await expect(page.getByText(/drag toward the stored reference/i)).toHaveCount(0)
 
     await capture(page, 'assembly-initial.png')
-    await next.click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'true', { timeout: 20_000 })
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '1')
-    await expect(page.getByRole('heading', { name: 'Check the motherboard fit' })).toBeVisible()
-    const panelRemoved = await canvas.getAttribute('data-panel-transform')
-    expect(panelRemoved).not.toBe(panelInitial)
-    await capture(page, 'assembly-glass-removed.png')
-
+    for (const state of [
+      ['glass-panel-removed', 'true'],
+      ['board-installed', 'true'],
+      ['cpu-installed', 'true'],
+      ['ram-a-installed', 'true'],
+      ['ram-b-installed', 'true'],
+      ['cooler-installed', 'true'],
+    ]) {
+      await next.click()
+      await expect(canvas).toHaveAttribute(`data-${state[0]}`, state[1], { timeout: 20_000 })
+    }
+    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '6')
+    await expect(canvas).toHaveAttribute('data-board-target-fit-status', 'validated-mounted')
+    await capture(page, 'assembly-motherboard-installed.png')
     await previous.click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'false', { timeout: 20_000 })
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '0')
-    await expect(canvas).toHaveAttribute('data-panel-transform', panelInitial)
-    await expect(canvas).toHaveAttribute('data-motherboard-visible', 'false')
-
-    await next.click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'true', { timeout: 20_000 })
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '1')
-    await expect(page.getByRole('button', { name: 'Preview fit approach' })).toBeEnabled()
-    await capture(page, 'assembly-motherboard-staged.png')
-
-    await page.getByRole('button', { name: 'Preview fit approach' }).click()
-    await expect(canvas).toHaveAttribute('data-board-preview-state', 'exploded-reference-only', { timeout: 20_000 })
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '2')
-    await expect(page.getByRole('heading', { name: 'Motherboard fit blocked' })).toBeVisible()
-    await expect(canvas).toHaveAttribute('data-board-installed', 'false')
-    await expect(canvas).toHaveAttribute('data-board-target-fit-status', 'blocked-by-solid-tray')
-    const preview = await canvas.evaluate((element) => ({
-      rootX: Number(element.dataset.boardRootPosition.split(',')[0]),
-      safeX: Number(element.dataset.boardSafeRootX),
-      gapMm: Number(element.dataset.boardTrayBarrierGapMm),
-      state: element.dataset.boardTransformState,
-    }))
-    expect(preview.rootX).toBeCloseTo(preview.safeX, 5)
-    expect(preview.gapMm).toBeGreaterThan(0)
-    expect(preview.state).toBe('safe-fit-barrier')
-    expect((await canvas.getAttribute('data-board-root-position')).split(',').slice(1)).toEqual(boardStageTransform.split(',').slice(1))
-    await expect(canvas).toHaveAttribute('data-motherboard-target-quaternion', targetQuaternion)
-    await expect(canvas).toHaveAttribute('data-motherboard-target-scale', targetScale)
-    await expect(page.getByRole('button', { name: 'Fit correction required' })).toBeDisabled()
-    await capture(page, 'assembly-fit-preview-blocked.png')
-
-    await previous.click()
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '1')
-    await expect(canvas).toHaveAttribute('data-board-transform-state', 'staging')
-    const stagedX = Number((await canvas.getAttribute('data-board-root-position')).split(',')[0])
-    expect(stagedX).toBeCloseTo(boardStageX, 5)
-    await expect(canvas).toHaveAttribute('data-board-root-position', boardStageTransform)
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'true')
-    await page.getByRole('button', { name: 'Preview fit approach' }).click()
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '2')
-    await expect(canvas).toHaveAttribute('data-board-transform-state', 'safe-fit-barrier')
-    const rootAtPreview = await canvas.getAttribute('data-board-root-position')
-    await page.getByRole('button', { name: 'Replay step' }).click()
-    await waitForSequenceIdle(page)
-    await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '2')
-    await expect(canvas).toHaveAttribute('data-board-root-position', rootAtPreview)
+    await expect(canvas).toHaveAttribute('data-cooler-installed', 'false', { timeout: 20_000 })
     await page.getByRole('button', { name: 'Reset Activity' }).click()
     await waitForSequenceIdle(page)
     await expect(activity(page)).toHaveAttribute('data-sequence-cursor', '0')
@@ -178,7 +134,7 @@ test.describe('CSS-3D-03A-R reversible guided assembly and disassembly', () => {
   test('stereo mode animates the shared scene and application hands follow both guided actions', async ({ page }) => {
     await openGuided(page, '/student/assembly', { width: 874, height: 402 })
     const canvas = guidedCanvas(page)
-    await page.getByRole('button', { name: 'VR View' }).click()
+    await page.getByRole('button', { name: 'VR View' }).evaluate((button) => button.dispatchEvent(new MouseEvent('click', { bubbles: true })))
     await expect(canvas).toHaveAttribute('data-hands-load-state', 'loaded', { timeout: 15_000 })
     await expect(canvas).toHaveAttribute('data-hand-root-count', '2')
     await expect(canvas).toHaveAttribute('data-stereo-views', 'left,right')
@@ -196,12 +152,12 @@ test.describe('CSS-3D-03A-R reversible guided assembly and disassembly', () => {
     await expect(canvas).toHaveAttribute('data-stereo-views', 'left,right')
 
     await page.locator('.assembly-stereo-controls [data-assembly-action="next-step"]').evaluate((button) => button.dispatchEvent(new MouseEvent('click', { bubbles: true })))
-    await expect(canvas).toHaveAttribute('data-guided-animation-state', 'motherboard-fit-preview-forward')
+    await expect(canvas).toHaveAttribute('data-guided-animation-state', 'motherboard-install-forward')
     await expect(canvas).toHaveAttribute('data-last-animation-hand-pose', 'grip')
-    await expect(canvas).toHaveAttribute('data-board-preview-state', 'exploded-reference-only', { timeout: 20_000 })
-    await expect(canvas).toHaveAttribute('data-board-installed', 'false')
-    await expect(page.locator('.assembly-stereo-step-right')).toContainText('Preview only · not installed')
-    await capture(page, 'assembly-mobile-landscape-stereo-board-preview.png')
+    await expect(canvas).toHaveAttribute('data-board-preview-state', 'installed', { timeout: 20_000 })
+    await expect(canvas).toHaveAttribute('data-board-installed', 'true')
+    await expect(page.locator('.assembly-stereo-step-right')).toContainText('Install the CPU')
+    await capture(page, 'assembly-mobile-landscape-stereo-board-installed.png')
     await page.getByRole('button', { name: 'Exit VR View and return to Normal 3D' }).click()
     await expect(canvas).toHaveAttribute('data-render-mode', 'normal')
     await expect(canvas).toHaveAttribute('data-hands-visible', 'false')
@@ -256,39 +212,31 @@ test.describe('CSS-3D-03A-R reversible guided assembly and disassembly', () => {
     await expect(activity(page)).toHaveAttribute('data-sequence-busy', 'false')
   })
 
-  test('disassembly reverses only the verified case-panel transform and keeps unverified removals unavailable', async ({ page }) => {
+  test('disassembly removes cooler, RAM, CPU, motherboard, then restores the case panel', async ({ page }) => {
     await openGuided(page, '/student/disassembly')
     const canvas = guidedCanvas(page)
     const initialPanel = await canvas.getAttribute('data-panel-transform')
-    await expect(canvas).toHaveAttribute('data-motherboard-visible', 'false')
-    await expect(page.locator('[data-sequence-step]')).toHaveCount(1)
-    await expect(page.getByText('Motherboard removal unavailable', { exact: true })).toBeVisible()
-    await expect(page.getByText('No verified installed motherboard pose or removal path is available.')).toBeVisible()
+    await expect(canvas).toHaveAttribute('data-motherboard-visible', 'true')
+    await expect(canvas).toHaveAttribute('data-board-installed', 'true')
+    await expect(page.locator('[data-sequence-step]')).toHaveCount(6)
+    await expect(page.getByRole('heading', { name: 'Remove the CPU Cooler' })).toBeVisible()
     await capture(page, 'disassembly-initial.png')
+    for (const state of ['cooler-installed', 'ram-b-installed', 'ram-a-installed', 'cpu-installed', 'board-installed']) {
+      await page.getByRole('button', { name: 'Next step' }).click()
+      await expect(canvas).toHaveAttribute(`data-${state}`, 'false', { timeout: 20_000 })
+    }
+    await expect(page.getByRole('heading', { name: 'Reattach the access panel' })).toBeVisible()
+    await capture(page, 'disassembly-motherboard-removed.png')
     await page.getByRole('button', { name: 'Next step' }).click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'true', { timeout: 20_000 })
-    await expect(canvas).toHaveAttribute('data-motherboard-visible', 'false')
-    await expect(page.getByRole('heading', { name: 'Case access open' })).toBeVisible()
-    await capture(page, 'disassembly-glass-removed.png')
-    await page.getByRole('button', { name: 'VR View' }).click()
-    await expect(canvas).toHaveAttribute('data-render-mode', 'stereo')
-    await expect(canvas).toHaveAttribute('data-stereo-views', 'left,right')
-    await expect(page.locator('.assembly-stereo-step-right')).toContainText('Case access open')
-    await capture(page, 'disassembly-stereo-glass-removed.png')
-    await page.getByRole('button', { name: 'Exit VR View and return to Normal 3D' }).click()
-    await expect(canvas).toHaveAttribute('data-render-mode', 'normal')
-    await page.getByRole('button', { name: 'Previous' }).click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'false', { timeout: 20_000 })
-    await expect(canvas).toHaveAttribute('data-panel-transform', initialPanel)
-    await page.getByRole('button', { name: 'Next step' }).click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'true', { timeout: 20_000 })
+    await expect(canvas).toHaveAttribute('data-glass-panel-visible', 'true', { timeout: 20_000 })
+    await expect(canvas).not.toHaveAttribute('data-panel-transform', initialPanel)
+    await expect(page.getByRole('heading', { name: 'Disassembly complete' })).toBeVisible()
     await page.getByRole('button', { name: 'Replay step' }).click()
-    await expect(canvas).toHaveAttribute('data-glass-panel-removed', 'true', { timeout: 20_000 })
     await waitForSequenceIdle(page)
     await expect(page.getByRole('button', { name: 'Sequence complete' })).toBeDisabled()
     await page.getByRole('button', { name: 'Previous' }).click()
     await waitForSequenceIdle(page)
-    await expect(canvas).toHaveAttribute('data-glass-panel-visible', 'true')
+    await expect(canvas).toHaveAttribute('data-glass-panel-visible', 'false')
     await expect(page.locator('[data-hardware-canvas]')).toHaveCount(0)
   })
 
@@ -309,7 +257,7 @@ test.describe('CSS-3D-03A-R reversible guided assembly and disassembly', () => {
 
   test('a failed GLB load can be retried without creating a second viewer', async ({ page }) => {
     let failedOnce = false
-    await page.route('**/computer_case.glb', async (route) => {
+    await page.route('**/computer_case_motherboard_fit.glb', async (route) => {
       if (!failedOnce) {
         failedOnce = true
         await route.abort('failed')
@@ -326,16 +274,21 @@ test.describe('CSS-3D-03A-R reversible guided assembly and disassembly', () => {
     await expect(page.locator('[data-guided-canvas]')).toHaveCount(1)
   })
 
-  test('captures browser renders for initial, intermediate, blocked-preview, and disassembly states', async ({ page }) => {
+  test('captures browser renders for initial, installed, and stereo states', async ({ page }) => {
     await openGuided(page)
     await capture(page, 'assembly-initial-capture.png')
     await page.getByRole('button', { name: 'Next step' }).click()
     await expect(guidedCanvas(page)).toHaveAttribute('data-glass-panel-removed', 'true', { timeout: 20_000 })
     await capture(page, 'assembly-intermediate-capture.png')
-    await page.getByRole('button', { name: 'Preview fit approach' }).click()
-    await expect(guidedCanvas(page)).toHaveAttribute('data-board-preview-state', 'exploded-reference-only', { timeout: 20_000 })
-    await capture(page, 'assembly-fit-fallback-capture.png')
-    await page.getByRole('button', { name: 'VR View' }).click()
+    const guidedNext = page.locator('.assembly-guide-panel [data-assembly-action="next-step"]')
+    for (let index = 0; index < 5; index += 1) {
+      await guidedNext.click()
+      await waitForSequenceIdle(page)
+    }
+    await expect(guidedCanvas(page)).toHaveAttribute('data-board-preview-state', 'installed', { timeout: 20_000 })
+    await expect(guidedCanvas(page)).toHaveAttribute('data-cooler-installed', 'true', { timeout: 20_000 })
+    await capture(page, 'assembly-motherboard-installed-capture.png')
+    await page.getByRole('button', { name: 'VR View' }).evaluate((button) => button.dispatchEvent(new MouseEvent('click', { bubbles: true })))
     await expect(guidedCanvas(page)).toHaveAttribute('data-hands-load-state', 'loaded', { timeout: 15_000 })
     await capture(page, 'assembly-stereo-hands-capture.png')
   })

@@ -1,0 +1,34 @@
+{
+  "correctionId": "CSS-3D-04",
+  "sourceBlend": "ATX_Mid_Tower_Master.blend",
+  "sourceBlendPreserved": true,
+  "exportMethod": "GLB node-transform correction (Blender MCP unavailable in this session)",
+  "caseExport": "optimized_glb/computer_case_motherboard_fit.glb",
+  "motherboardExport": "optimized_glb/motherboard_motherboard_fit.glb",
+  "coordinateFrame": "Three.js exported frame",
+  "case": {
+    "trayNode": "CASE_MotherboardTray.001",
+    "originalThicknessMm": 7.336,
+    "correctedThicknessMm": 0.923,
+    "correction": "Preserve tray footprint and mounting plane while reducing the closed slab to a thin mounting plate."
+  },
+  "motherboard": {
+    "rootNode": "MB_ROOT.001",
+    "targetPositionM": [-0.09, 0.285, -0.03],
+    "targetScale": [1, -1, -1],
+    "targetWorldQuaternion": [0, 0, 0, 1],
+    "correction": "Flip the component face toward the negative-X glass side and translate the root to the service-side mounting plane; the matching tray and standoff set is shifted -17 mm so all nine markers remain aligned and visible through the removed panel."
+  },
+  "validation": {
+    "mountingPattern": "ATX-9",
+    "caseStandoffCount": 9,
+    "motherboardHoleCount": 9,
+    "maxHoleErrorMm": 0,
+    "rearIoReference": "CASE_RearIO.001",
+    "runtimeFitGate": "validated-mounted"
+  },
+  "runtimeAssets": [
+    "public/assets/hardware/optimized_glb/computer_case_motherboard_fit.glb",
+    "public/assets/hardware/optimized_glb/motherboard_motherboard_fit.glb"
+  ]
+}

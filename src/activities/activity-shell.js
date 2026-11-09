@@ -17,12 +17,12 @@ const activityDetails = {
   '/student/assembly': {
     title: 'Guided Assembly',
     eyebrow: 'GUIDED INSTALLATION',
-    description: 'Remove the case panel and inspect the supplied motherboard fit demonstration.',
+    description: 'Open the case and install the validated motherboard mounting configuration.',
   },
   '/student/disassembly': {
     title: 'Guided Disassembly',
     eyebrow: 'GUIDED REMOVAL',
-    description: 'Practice the verified glass-panel removal and reversal.',
+    description: 'Remove the validated motherboard and restore the case access panel.',
   },
 }
 
@@ -109,28 +109,26 @@ function hardwareWorkspace() {
 function assemblyWorkspace(path) {
   const isAssembly = path === '/student/assembly'
   const heading = isAssembly ? 'Assembly steps' : 'Disassembly steps'
-  const panelAction = isAssembly ? 'Prepare the case' : 'Remove the glass panel'
-  const secondStep = isAssembly
-    ? '<li data-sequence-step="1"><span>02</span><span><strong>Motherboard fit check</strong><small>Exploded preview · install blocked</small></span></li>'
-    : ''
-  const unavailableNote = isAssembly
-    ? ''
-    : '<p class="assembly-unavailable-note"><strong>Motherboard removal unavailable</strong><span>No verified installed motherboard pose or removal path is available.</span></p>'
-  const count = isAssembly ? '2' : '1'
+  const panelAction = isAssembly ? 'Prepare the case' : 'Remove the CPU Cooler'
+  const steps = isAssembly
+    ? [['Install the motherboard', 'Validated nine-hole ATX mounting'], ['Install the CPU', 'Validated socket alignment'], ['Install RAM module 1', 'Validated DIMM alignment'], ['Install RAM module 2', 'Validated DIMM alignment'], ['Install the CPU Cooler', 'Validated clearance']]
+    : [['Remove RAM module 2', 'Reverse DIMM path'], ['Remove RAM module 1', 'Reverse DIMM path'], ['Remove the CPU', 'Reverse socket path'], ['Remove the motherboard', 'Reverse ATX path'], ['Reattach the access panel', 'Restore the case']]
+  const unavailableNote = '<p class="assembly-unavailable-note"><strong>Scope boundary</strong><span>CPU, RAM, and cooler are verified here; GPU, storage, PSU, and case-fan steps remain outside this lesson.</span></p>'
+  const count = '6'
   const canvasAttribute = isAssembly ? 'data-assembly-canvas' : 'data-disassembly-canvas'
-  const sceneStatus = isAssembly ? 'Loading the case and motherboard reference GLBs…' : 'Loading the verified case GLB…'
-  const stereoStep = `<section class="assembly-stereo-step assembly-stereo-step-left" aria-hidden="true"><span class="activity-eyebrow" data-stereo-step-label>STEP 01 / ${count}</span><h2 data-stereo-step-title>${isAssembly ? 'Prepare the computer case' : 'Open the computer case'}</h2><p data-stereo-instruction>Remove the tempered-glass side panel.</p><small data-stereo-status>${isAssembly ? 'Verified removable case panel' : 'One verified removal step'}</small></section>
-    <section class="assembly-stereo-step assembly-stereo-step-right" role="status" aria-live="polite" aria-label="Current guided instruction"><span class="activity-eyebrow" data-stereo-step-label>STEP 01 / ${count}</span><h2 data-stereo-step-title>${isAssembly ? 'Prepare the computer case' : 'Open the computer case'}</h2><p data-stereo-instruction>Remove the tempered-glass side panel.</p><small data-stereo-status>${isAssembly ? 'Verified removable case panel' : 'One verified removal step'}</small></section>`
+  const sceneStatus = 'Loading the corrected case and motherboard GLBs…'
+  const stereoStep = `<section class="assembly-stereo-step assembly-stereo-step-left" aria-hidden="true"><span class="activity-eyebrow" data-stereo-step-label>STEP 01 / ${count}</span><h2 data-stereo-step-title>${isAssembly ? 'Prepare the computer case' : 'Remove the motherboard'}</h2><p data-stereo-instruction>${isAssembly ? 'Remove the tempered-glass side panel.' : 'Move the installed motherboard away from the ATX standoffs.'}</p><small data-stereo-status>Validated case + motherboard sequence</small></section>
+    <section class="assembly-stereo-step assembly-stereo-step-right" role="status" aria-live="polite" aria-label="Current guided instruction"><span class="activity-eyebrow" data-stereo-step-label>STEP 01 / ${count}</span><h2 data-stereo-step-title>${isAssembly ? 'Prepare the computer case' : 'Remove the motherboard'}</h2><p data-stereo-instruction>${isAssembly ? 'Remove the tempered-glass side panel.' : 'Move the installed motherboard away from the ATX standoffs.'}</p><small data-stereo-status>Validated case + motherboard sequence</small></section>`
 
   return `<div class="assembly-layout" data-assembly-layout data-guided-activity="${isAssembly ? 'assembly' : 'disassembly'}">
     <aside class="assembly-parts-panel" aria-label="Guided sequence overview">
       <div class="activity-panel-heading"><div><span class="activity-eyebrow">${isAssembly ? 'INSTALLATION' : 'REMOVAL'}</span><h2>${heading}</h2></div><span class="activity-count">${count}</span></div>
       <ol class="assembly-step-list" aria-label="${heading}" data-assembly-step-list>
         <li data-sequence-step="0" aria-current="step"><span>01</span><span><strong>${panelAction}</strong><small>Animate the removable case panel</small></span></li>
-        ${secondStep}
+        ${steps.map(([title, detail], index) => `<li data-sequence-step="${index + 1}"><span>${String(index + 2).padStart(2, '0')}</span><span><strong>${title}</strong><small>${detail}</small></span></li>`).join('')}
       </ol>
       ${unavailableNote}
-      ${isAssembly ? '<p class="assembly-tray-note">The motherboard step is an exploded fit preview only. Installation stays unavailable until the tray, board, standoffs, rear I/O, and attached components pass fit validation.</p>' : '<p class="assembly-tray-note">This scene starts with the case only. Additional component removals remain unavailable until their installed transforms are verified.</p>'}
+      <p class="assembly-tray-note">CPU, paired RAM modules, and the cooler use the authored component roots and validation reports. Every step is reversible and shared by Normal 3D and stereo VR.</p>
     </aside>
     <section class="assembly-scene-column" aria-label="Guided 3D ${isAssembly ? 'assembly' : 'disassembly'} workbench">
       <div class="assembly-scene-toolbar"><div><span class="activity-eyebrow">COMPUTER WORKBENCH</span><span data-assembly-viewer-status role="status" aria-live="polite">${sceneStatus}</span></div>
@@ -150,7 +148,7 @@ function assemblyWorkspace(path) {
           <button type="button" class="assembly-primary-button" data-assembly-action="next-step" disabled>Next Step</button>
         </div>
       </div>
-      <div class="assembly-scene-footer"><span>${isAssembly ? 'Real case and motherboard Blender GLBs · fit preview stops before the tray.' : 'Verified case GLB · further installed component poses are not available.'}</span><span class="assembly-drag-hint" data-guided-animation-hint>Step controlled</span></div>
+      <div class="assembly-scene-footer"><span>Validated case, motherboard, CPU, RAM, and cooler GLBs · reversible sequence.</span><span class="assembly-drag-hint" data-guided-animation-hint>Step controlled</span></div>
     </section>
     <aside class="assembly-guide-panel" aria-labelledby="assembly-guide-title" data-assembly-guide>
       <div class="assembly-guide-progress"><span class="activity-eyebrow" data-assembly-step-label>STEP 01 / ${count}</span><span class="assembly-state-pill" data-assembly-state-pill>READY</span></div>

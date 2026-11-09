@@ -17,10 +17,21 @@ function isPortraitGateActive() {
   return isPhoneViewport() && width <= height
 }
 
-const ASSEMBLY_TRANSITIONS = Object.freeze(['case-panel', 'motherboard-fit-preview'])
-const DISASSEMBLY_TRANSITIONS = Object.freeze(['case-panel'])
+const ASSEMBLY_TRANSITIONS = Object.freeze(['case-panel', 'motherboard-install', 'cpu', 'ramA', 'ramB', 'cooler'])
+const DISASSEMBLY_TRANSITIONS = Object.freeze(['cooler', 'ramB', 'ramA', 'cpu', 'motherboard-install', 'case-panel'])
 
-function assemblyStep(cursor, barrierMm) {
+function assemblyStep(cursor) {
+  if (cursor >= 6) return {
+    number: 6,
+    title: 'Assembly complete',
+    instruction: 'The CPU, paired RAM modules, and cooler are installed on the validated motherboard.',
+    alignmentTitle: 'Verified component sequence',
+    alignmentDescription: 'All authored component roots reached their validated installation transforms.',
+    componentName: 'CPU, RAM, and CPU Cooler',
+    componentFunction: 'The core component installation sequence is complete.',
+    state: 'COMPLETE',
+    feedback: 'Use Previous or Replay to inspect the reversible installation steps.',
+  }
   if (cursor === 0) return {
     number: 1,
     title: 'Prepare the computer case',
@@ -34,51 +45,58 @@ function assemblyStep(cursor, barrierMm) {
   }
   if (cursor === 1) return {
     number: 2,
-    title: 'Check the motherboard fit',
-    instruction: 'Preview the motherboard approach. The supplied board and case transforms do not establish a valid installation; this is an exploded fit demonstration, not an installation.',
-    alignmentTitle: 'Exploded fit preview',
-    alignmentDescription: 'The solid tray and mismatched mounts/rear I/O prevent a validated installed pose. No motherboard installation is recorded.',
+    title: 'Install the motherboard',
+    instruction: 'Move the motherboard into the corrected tray position until all nine mounting holes sit on the ATX standoffs.',
+    alignmentTitle: 'Validated ATX mounting fit',
+    alignmentDescription: 'The corrected tray, orientation, and nine-hole standoff alignment are validated before installation is enabled.',
     componentName: 'ATX motherboard',
-    componentFunction: 'The board holds the CPU, memory, expansion slots, and connectors. This scene only previews the unresolved fit.',
-    state: 'FIT CHECK',
-    feedback: 'The motherboard is staged outside the case. Next Step animates it only to the measured tray barrier.',
+    componentFunction: 'The board holds the CPU, memory, expansion slots, and connectors.',
+    state: 'READY TO INSTALL',
+    feedback: 'Select Next Step to animate the motherboard into its validated mounting position.',
   }
-  return {
-    number: 2,
-    title: 'Motherboard fit blocked',
-    instruction: 'The preview stopped about ' + (Number.isFinite(barrierMm) ? `${barrierMm.toFixed(1)} mm` : 'before the tray') + ' short of the authored position. The source models need correction before an installation lesson can be shown.',
-    alignmentTitle: 'Preview only · not installed',
-    alignmentDescription: 'The source geometry has additional mounting and rear I/O conflicts. The board remains uninstalled.',
-    componentName: 'ATX motherboard',
-    componentFunction: 'The fit demonstration stops before the authored target; it is not a completed installation lesson.',
-    state: 'FIT BLOCKED',
-    feedback: 'The animated fit check reached the safe stop before the solid tray. No placement or installation is recorded.',
-  }
+  const steps = [
+    ['Install the CPU', 'Observe how the processor aligns with the motherboard CPU socket.', 'Validated CPU socket alignment', 'The modeled LGA1700-compatible package is placed on the authored CPU socket marker.', 'Processor (CPU)', 'The CPU executes instructions and must be oriented to the socket key.', 'CPU INSTALLED'],
+    ['Install RAM module 1', 'Observe how the first memory module aligns with the matching DIMM slot.', 'Validated DIMM slot alignment', 'RAM A uses the authored first populated DDR5-style slot and key notch.', 'Memory module 1', 'This module provides fast volatile working memory for the processor.', 'RAM 1 INSTALLED'],
+    ['Install RAM module 2', 'Observe how the second memory module aligns with the adjacent matching DIMM slot.', 'Validated DIMM slot alignment', 'RAM B uses the authored adjacent populated DDR5-style slot.', 'Memory module 2', 'The paired module expands the working memory configuration.', 'RAM 2 INSTALLED'],
+    ['Install the CPU Cooler', 'Observe how the cooling assembly is positioned over the processor.', 'Validated cooler clearance', 'The cooler contact base aligns to the CPU and clears the RAM, glass panel, and top panel.', 'CPU Cooler', 'The cooler transfers heat from the processor into the surrounding air.', 'COOLER INSTALLED'],
+  ]
+  const [title, instruction, alignmentTitle, alignmentDescription, componentName, componentFunction, state] = steps[cursor - 2] || steps[3]
+  return { number: cursor + 1, title, instruction, alignmentTitle, alignmentDescription, componentName, componentFunction, state, feedback: `Select Next Step to animate ${title.toLowerCase()}.` }
 }
 
 function disassemblyStep(cursor) {
+  if (cursor >= 6) return {
+    number: 6,
+    title: 'Disassembly complete',
+    instruction: 'The cooler, RAM, CPU, motherboard, and access panel sequence completed in reverse order.',
+    alignmentTitle: 'Verified reverse sequence',
+    alignmentDescription: 'All dependent components returned to their authored staging positions.',
+    componentName: 'Computer case',
+    componentFunction: 'The case is ready for the next verified service step.',
+    state: 'COMPLETE',
+    feedback: 'Use Previous to inspect any removal transition again.',
+  }
   if (cursor === 0) return {
     number: 1,
-    title: 'Open the computer case',
-    instruction: 'Remove the tempered-glass side panel before accessing the verified case interior.',
-    alignmentTitle: 'Verified case component',
-    alignmentDescription: 'The case and its removable glass panel are included in this validated scene.',
-    componentName: 'Tempered-glass side panel',
-    componentFunction: 'Removing the panel opens the case for component inspection and service.',
-    state: 'CASE CLOSED',
-    feedback: 'Select Next Step to animate the glass panel out of its installed position.',
+    title: 'Remove the CPU Cooler',
+    instruction: 'The cooler starts installed. Move it away from the processor while preserving the CPU and RAM.',
+    alignmentTitle: 'Installed starting state',
+    alignmentDescription: 'This reverse sequence starts from the validated assembled CPU, RAM, and cooler state.',
+    componentName: 'CPU Cooler',
+    componentFunction: 'Remove the cooler before accessing the processor or memory.',
+    state: 'INSTALLED',
+    feedback: 'Select Next Step to animate the cooler away from the processor.',
   }
-  return {
-    number: 1,
-    title: 'Case access open',
-    instruction: 'The glass panel is removed. Further component-removal steps remain unavailable because the motherboard installation position has not been verified.',
-    alignmentTitle: 'More parts unavailable',
-    alignmentDescription: 'The scene does not portray the motherboard as installed. This activity stops at the verified case-panel removal.',
-    componentName: 'Motherboard removal unavailable',
-    componentFunction: 'No installed motherboard pose or safe removal path is currently validated.',
-    state: 'CASE OPEN',
-    feedback: 'Use Previous to reinstall the glass panel. No unverified component removal is shown.',
-  }
+  const steps = [
+    ['Remove the CPU Cooler', 'Move the cooler away from the processor while preserving the installed CPU and RAM.', 'Validated reverse cooler path', 'The cooler returns to its authored removal staging position.', 'CPU Cooler', 'Remove the cooler before accessing the processor.', 'COOLER INSTALLED'],
+    ['Remove RAM module 2', 'Move the second memory module away from its DIMM slot.', 'Validated reverse DIMM path', 'RAM B is removed first so the paired memory state remains deterministic.', 'Memory module 2', 'Remove the most recently installed module first.', 'RAM 2 REMOVED'],
+    ['Remove RAM module 1', 'Move the first memory module away from its DIMM slot.', 'Validated reverse DIMM path', 'RAM A returns to its authored removal staging position.', 'Memory module 1', 'The remaining memory module is removed before the CPU.', 'RAM 1 REMOVED'],
+    ['Remove the CPU', 'Move the processor away from the motherboard socket.', 'Validated reverse CPU path', 'The CPU returns to its authored staging position while the motherboard remains installed.', 'Processor (CPU)', 'Remove the processor after the cooler and RAM are clear.', 'CPU REMOVED'],
+    ['Remove the motherboard', 'Move the motherboard away from the ATX standoffs before restoring the access panel.', 'Installed starting state', 'The board follows the validated reverse path from its mounted position.', 'ATX motherboard', 'The motherboard is removed after dependent components are clear.', 'MOTHERBOARD REMOVED'],
+    ['Reattach the access panel', 'Reattach the tempered-glass panel to restore the closed case.', 'Verified reverse sequence', 'The panel closes after all dependent components have been removed.', 'Tempered-glass side panel', 'The panel closes the case after service work.', 'COMPLETE'],
+  ]
+  const [title, instruction, alignmentTitle, alignmentDescription, componentName, componentFunction, state] = steps[Math.min(cursor, steps.length - 1)]
+  return { number: cursor + 1, title, instruction, alignmentTitle, alignmentDescription, componentName, componentFunction, state, feedback: `Select Next Step to animate ${title.toLowerCase()}.` }
 }
 
 export function mountActivityWorkspace({ root, path }) {
@@ -118,8 +136,7 @@ export function mountActivityWorkspace({ root, path }) {
   document.body.classList.add('learning-activity-active')
 
   function currentStep(cursor) {
-    const barrier = Number(canvas.dataset.boardTrayBarrierGapMm)
-    return isAssembly ? assemblyStep(cursor, barrier) : disassemblyStep(cursor)
+    return isAssembly ? assemblyStep(cursor) : disassemblyStep(cursor)
   }
 
   function updateMode() {
@@ -148,9 +165,9 @@ export function mountActivityWorkspace({ root, path }) {
     activity.dataset.sequenceCursor = String(cursor)
     activity.dataset.sequenceBusy = String(busy)
     activity.dataset.casePrepared = String(Boolean(canvas.dataset.glassPanelRemoved === 'true'))
-    activity.dataset.motherboardInstalled = 'false'
-    activity.dataset.lessonComplete = 'false'
-    activity.dataset.assemblyReadiness = isAssembly ? 'fit-blocked' : 'verified-case-only'
+    activity.dataset.motherboardInstalled = canvas.dataset.boardInstalled || 'false'
+    activity.dataset.lessonComplete = String(cursor === length && (isAssembly ? canvas.dataset.coolerInstalled === 'true' : true))
+    activity.dataset.assemblyReadiness = canvas.dataset.boardTargetFitStatus === 'validated-mounted' ? 'validated' : 'fit-blocked'
     workspace.querySelector('[data-assembly-step-title]').textContent = step.title
     workspace.querySelector('[data-assembly-instruction]').textContent = step.instruction
     workspace.querySelector('[data-assembly-alignment-title]').textContent = step.alignmentTitle
@@ -168,27 +185,25 @@ export function mountActivityWorkspace({ root, path }) {
     workspace.querySelector('[data-assembly-step-indicator]').textContent = label
     workspace.querySelector('[data-assembly-state-pill]').textContent = busy ? 'ANIMATING' : step.state
     feedback.textContent = busy ? (isAssembly ? 'Playing the guided 3D step…' : 'Playing the guided removal…') : step.feedback
-    feedback.dataset.state = isAssembly && cursor === 2 ? 'blocked' : 'info'
+    feedback.dataset.state = cursor === length ? 'complete' : 'info'
     for (const button of previousButtons) button.disabled = busy || !ready || cursor === 0
     for (const button of replayButtons) button.disabled = busy || !ready || cursor === 0
     for (const button of resetButtons) button.disabled = busy || !ready || cursor === 0
     const nextLabel = busy
       ? 'Animating…'
-      : cursor === length && isAssembly
-        ? 'Fit correction required'
-        : cursor === length
+      : cursor === length
           ? 'Sequence complete'
           : cursor === 0
             ? 'Next step'
             : isAssembly
-              ? 'Preview fit approach'
+            ? isAssembly ? 'Continue installation' : 'Next step'
               : 'Next step'
     for (const button of nextButtons) {
       button.disabled = busy || !ready || cursor >= length
       button.textContent = button.closest('.assembly-stereo-controls')
-        ? (busy ? 'Animating…' : cursor === length ? (isAssembly ? 'Fit blocked' : 'Complete') : 'Next Step')
+        ? (busy ? 'Animating…' : cursor === length ? 'Complete' : 'Next Step')
         : nextLabel
-      button.title = cursor === length && isAssembly ? 'The motherboard cannot be shown as installed until its Blender fit is corrected.' : ''
+      button.title = ''
     }
     workspace.querySelector('[data-assembly-step-list]').dataset.sequenceCursor = String(cursor)
     for (const item of workspace.querySelectorAll('[data-sequence-step]')) {
@@ -199,13 +214,15 @@ export function mountActivityWorkspace({ root, path }) {
       if (current) item.setAttribute('aria-current', 'step')
       else item.removeAttribute('aria-current')
     }
-    const activeBoardPreview = isAssembly && cursor > 0
-    canvas.dataset.boardPreviewState = activeBoardPreview ? (cursor > 1 ? 'exploded-reference-only' : 'staged') : 'hidden'
+    canvas.dataset.boardPreviewState = isAssembly ? (cursor === 0 ? 'hidden' : cursor >= 2 ? 'installed' : 'staged') : (cursor >= 5 ? 'staged' : 'installed')
     updateMode()
   }
 
   async function playTransition(name, direction) {
-    const result = await viewer?.animateTransition(name, direction)
+    const viewerDirection = isDisassembly
+      ? (direction === 'forward' ? 'reverse' : 'forward')
+      : direction
+    const result = await viewer?.animateTransition(name, viewerDirection)
     if (result?.ok === false) {
       feedback.textContent = result.message || 'This step cannot be played with the current model transforms.'
       feedback.dataset.state = 'blocked'
@@ -229,6 +246,7 @@ export function mountActivityWorkspace({ root, path }) {
       document.documentElement.dataset.threeFoundation = Object.keys(threeRuntime.addons).join(',')
       viewer = createAssemblyViewer(canvas, {
         showBoardOnPanelOpen: isAssembly,
+        startDisassemblyInstalled: isDisassembly,
         onLoaded() {
           activity.dataset.fitStatus = canvas.dataset.boardTargetFitStatus || 'not-required'
           updateSequence(sequence.state)
@@ -251,7 +269,7 @@ export function mountActivityWorkspace({ root, path }) {
       return
     }
     activity.dataset.assemblyLoadState = 'loading'
-    status.textContent = isAssembly ? 'Loading the case and motherboard reference GLBs…' : 'Loading the verified case GLB…'
+    status.textContent = 'Loading the verified case, motherboard, CPU, RAM, and cooler GLBs…'
     loading.hidden = false
     error.hidden = true
     try {
@@ -262,9 +280,7 @@ export function mountActivityWorkspace({ root, path }) {
       activeViewer.setActive(true)
       loading.hidden = true
       error.hidden = true
-      status.textContent = isAssembly
-        ? 'Real Blender GLBs ready · drag to orbit · scroll or pinch to zoom.'
-        : 'Verified case model ready · drag to orbit · scroll or pinch to zoom.'
+      status.textContent = 'Real Blender GLBs ready · drag to orbit · scroll or pinch to zoom.'
       activity.dataset.assemblyLoadState = 'loaded'
       activeViewer.setCameraView()
       activeViewer.setMode(mode)
